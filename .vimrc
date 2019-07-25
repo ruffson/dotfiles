@@ -120,7 +120,7 @@ let g:auto_save = 1
 " fzf vim
 nnoremap <C-p> :Files<cr>
 " zenburn:
-colors dracula
+" colors dracula
 set term=screen-256color
 hi Search ctermfg=209
 hi Search ctermbg=237
