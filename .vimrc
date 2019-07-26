@@ -109,6 +109,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'dracula/vim', { 'as': 'dracula' },
+Plug 'tpope/vim-fugitive',
 "Plug 'ap/vim-buftabline'
 call plug#end()
 
