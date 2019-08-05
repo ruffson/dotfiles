@@ -37,6 +37,9 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; enable windmove
+(windmove-default-keybindings)
+
 ;; PYTHON CONFIGURATION
 ;; --------------------------------------
 
