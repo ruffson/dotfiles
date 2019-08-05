@@ -18,7 +18,8 @@
     elpy
     flycheck
     dracula-theme
-    py-autopep8))
+    py-autopep8
+    magit))
 
 (mapc #'(lambda (package)
     (unless (package-installed-p package)
