@@ -40,6 +40,8 @@
 
 ;; enable windmove
 (windmove-default-keybindings)
+;; Setting font size
+(set-face-attribute 'default nil :height 90)
 
 ;; PYTHON CONFIGURATION
 ;; --------------------------------------
