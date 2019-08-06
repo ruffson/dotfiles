@@ -49,7 +49,7 @@
 (menu-bar-mode -1) ;; disable menu-bar
 
 (windmove-default-keybindings) ;; enable windmove
-(set-face-attribute 'default nil :height 90) ;; Setting font size
+(set-face-font 'default "Monaco-12") ;; Setting font size
 
 (setq-default indent-tabs-mode nil) ;; use spaces
 
