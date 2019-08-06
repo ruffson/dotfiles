@@ -55,6 +55,8 @@
 
 (beacon-mode 1) ;; enable beacon-mode (cursor highlighting)
 
+(auto-complete-mode 1) ;; enable auto-completion
+
  ;; Configure Indent guides
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 (setq highlight-indent-guides-method 'character) ;; sets vertical lines for indents
