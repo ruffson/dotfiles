@@ -21,7 +21,7 @@
  '(global-visual-line-mode t)
  '(package-selected-packages
    (quote
-    (doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
+    (highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -46,12 +46,14 @@
 (ido-mode 1)
 
 (tool-bar-mode -1) ;; disable tool-bar
+(menu-bar-mode -1) ;; disable menu-bar
 
 (windmove-default-keybindings) ;; enable windmove
 (set-face-attribute 'default nil :height 90) ;; Setting font size
 
 (setq-default indent-tabs-mode nil) ;; use spaces
 
+(beacon-mode 1) ;; enable beacon-mode (cursor highlighting)
 
  ;; Configure Indent guides
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
@@ -68,24 +70,27 @@
   ("C-<next>" . centaur-tabs-forward))
 ; (setq centaur-tabs-style "wave")
 
+
 ;; Doome Themes config
 (require 'doom-themes)
-
 ;; Global settings (defaults)
 (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
       doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
 ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;; may have their own settings.
 (load-theme 'doom-snazzy t)
-
 ;; Enable flashing mode-line on errors
 (doom-themes-visual-bell-config)
-
 ;; Enable custom neotree theme (all-the-icons must be installed!)
 (doom-themes-neotree-config)
 ;; or for treemacs users
 (doom-themes-treemacs-config)
-
 ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
+
+;; Hightlight symbol config (show corresponding brackets)
+(require 'highlight-symbol)
+(global-set-key [(control f3)] 'highlight-symbol)
+(global-set-key [f3] 'highlight-symbol-next)
+(global-set-key [(shift f3)] 'highlight-symbol-prev)
+(global-set-key [(meta f3)] 'highlight-symbol-query-replace)
