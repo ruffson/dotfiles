@@ -13,12 +13,7 @@
   (package-refresh-contents))
 
 (defvar myPackages
-  '(better-defaults
-    ein
-    elpy
-    flycheck
-    dracula-theme
-    py-autopep8
+  '(dracula-theme
     magit))
 
 (mapc #'(lambda (package)
@@ -29,7 +24,7 @@
 ;; BASIC CUSTOMIZATION
 ;; --------------------------------------
 
-;; (setq inhibit-startup-message t) ;; hide the startup message
+(setq inhibit-startup-message t) ;; hide the startup message
 (load-theme 'dracula t) ;; load dracula theme
 (global-linum-mode t) ;; enable line numbers globally
 
@@ -38,23 +33,12 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
-;; enable windmove
-(windmove-default-keybindings)
-;; Setting font size
-(set-face-attribute 'default nil :height 90)
+(tool-bar-mode -1) ;; disable tool-bar
 
-;; PYTHON CONFIGURATION
-;; --------------------------------------
+(windmove-default-keybindings) ;; enable windmove
+(set-face-attribute 'default nil :height 90) ;; Setting font size
 
-(elpy-enable)
+(setq-default indent-tabs-mode nil) ;; use spaces
 
-;; use flycheck not flymake with elpy
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-;; enable autopep8 formatting on save
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
+(global-visual-line-mode t) ;; use visual line mode
 ;; init.el ends here;; init.el --- Emacs configuration
