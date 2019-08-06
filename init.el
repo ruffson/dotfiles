@@ -29,10 +29,10 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; (mapc #'(lambda (package)
-;;     (unless (package-installed-p package)
-;;       (package-install package)))
-;;       package-selected-packages)
+(mapc #'(lambda (package)
+    (unless (package-installed-p package)
+      (package-install package)))
+      package-selected-packages)
 
 ;; BASIC CUSTOMIZATION
 ;; --------------------------------------
