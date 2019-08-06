@@ -12,14 +12,6 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-;; (defvar myPackages
-;;   '(dracula-theme
-;;     magit))
-
-;; (mapc #'(lambda (package)
-;;     (unless (package-installed-p package)
-;;       (package-install package)))
-;;       myPackages)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -37,6 +29,10 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; (mapc #'(lambda (package)
+;;     (unless (package-installed-p package)
+;;       (package-install package)))
+;;       package-selected-packages)
 
 ;; BASIC CUSTOMIZATION
 ;; --------------------------------------
