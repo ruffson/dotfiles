@@ -21,7 +21,7 @@
  '(global-visual-line-mode t)
  '(package-selected-packages
    (quote
-    (doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
+    (use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
