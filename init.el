@@ -47,21 +47,20 @@
 
 (tool-bar-mode -1) ;; disable tool-bar
 (menu-bar-mode -1) ;; disable menu-bar
+(toggle-scroll-bar -1) ;; disable scroll bars
 
 (windmove-default-keybindings) ;; enable windmove
 (set-face-font 'default "Monaco-12") ;; Setting font size
-
 (setq-default indent-tabs-mode nil) ;; use spaces
 
 (beacon-mode 1) ;; enable beacon-mode (cursor highlighting)
-
 (auto-complete-mode 1) ;; enable auto-completion
-
 (which-key-mode 1)
 
  ;; Configure Indent guides
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 (setq highlight-indent-guides-method 'character) ;; sets vertical lines for indents
+
 
 (require 'use-package)
 ;; Centaur TABS config
