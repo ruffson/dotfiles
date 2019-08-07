@@ -21,7 +21,7 @@
  '(global-visual-line-mode t)
  '(package-selected-packages
    (quote
-    (use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
+    (which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -56,6 +56,8 @@
 (beacon-mode 1) ;; enable beacon-mode (cursor highlighting)
 
 (auto-complete-mode 1) ;; enable auto-completion
+
+(which-key-mode 1)
 
  ;; Configure Indent guides
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
