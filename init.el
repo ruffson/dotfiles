@@ -48,9 +48,12 @@
 (tool-bar-mode -1) ;; disable tool-bar
 (menu-bar-mode -1) ;; disable menu-bar
 (toggle-scroll-bar -1) ;; disable scroll bars
-
 (windmove-default-keybindings) ;; enable windmove
-(set-face-font 'default "Monaco-12") ;; Setting font size
+(global-set-key (kbd "C-x g") 'magit-status)
+
+(if (equal window-system 'ns)
+        (set-face-font 'default "Monaco-12") ;; Setting font for macos
+    (set-face-font 'default "Hack-9")) ;; Setting font for other
 (setq-default indent-tabs-mode nil) ;; use spaces
 
 (beacon-mode 1) ;; enable beacon-mode (cursor highlighting)
