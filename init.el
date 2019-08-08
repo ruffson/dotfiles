@@ -74,7 +74,7 @@
   :bind
   ("C-<prior>" . centaur-tabs-backward)
   ("C-<next>" . centaur-tabs-forward))
-; (setq centaur-tabs-style "wave")
+(setq centaur-tabs-style "wave")
 
 
 ;; Doome Themes config
