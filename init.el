@@ -21,7 +21,7 @@
  '(global-visual-line-mode t)
  '(package-selected-packages
    (quote
-    (ag projectile xkcd which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
+    (ibuffer-sidebar all-the-icons-dired dired-sidebar ag projectile xkcd which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -124,4 +124,41 @@
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setq projectile-indexing-method 'native)
+;; (setq projectile-indexing-method 'native)
+
+;; Add dired sidebar
+(use-package dired-sidebar
+  ;; :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  ;; (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
+;; Add sidebar buffer
+(use-package ibuffer-sidebar
+  :load-path "~/.emacs.d/fork/ibuffer-sidebar"
+  :ensure nil
+  :commands (ibuffer-sidebar-toggle-sidebar)
+  :config)
+  ;; (setq ibuffer-sidebar-use-custom-font t)
+  ;; (setq ibuffer-sidebar-face `(:family "Helvetica" :height 140)))
+
+;; Toggle sidebar and ibuffer-sidebar
+(defun +sidebar-toggle ()
+  "Toggle both `dired-sidebar' and `ibuffer-sidebar'."
+  (interactive)
+  (dired-sidebar-toggle-sidebar)
+  (ibuffer-sidebar-toggle-sidebar))
+
+(global-set-key (kbd "C-x C-n") '+sidebar-toggle)
