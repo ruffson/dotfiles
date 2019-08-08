@@ -50,6 +50,7 @@
 (toggle-scroll-bar -1) ;; disable scroll bars
 (windmove-default-keybindings) ;; enable windmove
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch)
 
 (if (equal window-system 'ns)
         (set-face-font 'default "Monaco-12") ;; Setting font for macos
