@@ -56,7 +56,7 @@
 (global-set-key (kbd "C-x M-g") 'magit-dispatch)
 
 (if (equal window-system 'ns)
-        (set-face-font 'default "Monaco-12") ;; Setting font for macos
+        (set-face-font 'default "Hack-13") ;; Setting font for macos
     (set-face-font 'default "Hack-9")) ;; Setting font for other
 (setq-default indent-tabs-mode nil) ;; use spaces
 
