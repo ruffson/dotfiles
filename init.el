@@ -64,6 +64,12 @@
 (auto-complete-mode 1) ;; enable auto-completion
 (which-key-mode 1)
 
+;; Keep searched strings highlighted
+(setq lazy-highlight-cleanup nil)
+(setq lazy-highlight-max-at-a-time nil)
+(setq lazy-highlight-initial-delay 0)
+
+
  ;; Configure Indent guides
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 (setq highlight-indent-guides-method 'character) ;; sets vertical lines for indents
