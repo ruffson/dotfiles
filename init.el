@@ -84,8 +84,11 @@
   :bind
   ("C-<prior>" . centaur-tabs-backward)
   ("C-<next>" . centaur-tabs-forward))
-(setq centaur-tabs-style "wave")
-
+(setq centaur-tabs-set-modified-marker t)
+(setq centaur-tabs-style "chamfer")
+(setq centaur-tabs-set-bar 'left)
+(setq centaur-tabs-set-icons t)
+(setq centaur-tabs-gray-out-icons 'buffer)
 
 ;; Doome Themes config
 (require 'doom-themes)
@@ -115,9 +118,10 @@
 (require 'doom-modeline)
 (doom-modeline-mode 1)
 ;; Install necessary fonts for this:
-;; M-X, all-the-icons-install-fonts
+;; TODO:  M-X, all-the-icons-install-fonts
 
 ;; project manager 'projectile' config
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setq projectile-indexing-method 'native)
