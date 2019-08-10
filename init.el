@@ -21,7 +21,7 @@
  '(global-visual-line-mode t)
  '(package-selected-packages
    (quote
-    (ibuffer-sidebar all-the-icons-dired dired-sidebar ag projectile xkcd which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
+    (exec-path-from-shell ibuffer-sidebar all-the-icons-dired dired-sidebar ag projectile xkcd which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -55,8 +55,10 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch)
 
+(exec-path-from-shell-initialize)
+
 (if (equal window-system 'ns)
-        (set-face-font 'default "Hack-13") ;; Setting font for macos
+        (set-face-font 'default "Hack-12") ;; Setting font for macos
     (set-face-font 'default "Hack-9")) ;; Setting font for other
 (setq-default indent-tabs-mode nil) ;; use spaces
 
