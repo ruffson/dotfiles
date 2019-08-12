@@ -21,7 +21,7 @@
  '(global-visual-line-mode t)
  '(package-selected-packages
    (quote
-    (exec-path-from-shell urscript-mode ibuffer-sidebar all-the-icons-dired dired-sidebar ag projectile xkcd which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
+    (fill-column-indicator exec-path-from-shell urscript-mode ibuffer-sidebar all-the-icons-dired dired-sidebar ag projectile xkcd which-key use-package doom-modeline highlight-symbol beacon doom-themes centaur-tabs highlight-indent-guides magit py-autopep8 flycheck elpy ein))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -61,6 +61,45 @@
         (set-face-font 'default "Hack-12") ;; Setting font for macos
     (set-face-font 'default "Hack-9")) ;; Setting font for other
 (setq-default indent-tabs-mode nil) ;; use spaces
+
+
+
+;; Python config
+;;_______________
+(elpy-enable)
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter")
+;; use flycheck not flymake with elpy
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; enable autopep8 formatting on save
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+(defun sanityinc/fci-enabled-p () (symbol-value 'fci-mode))
+
+(defvar sanityinc/fci-mode-suppressed nil)
+(make-variable-buffer-local 'sanityinc/fci-mode-suppressed)
+
+(defadvice popup-create (before suppress-fci-mode activate)
+  "Suspend fci-mode while popups are visible"
+  (let ((fci-enabled (sanityinc/fci-enabled-p)))
+    (when fci-enabled
+      (setq sanityinc/fci-mode-suppressed fci-enabled)
+      (turn-off-fci-mode))))
+
+(defadvice popup-delete (after restore-fci-mode activate)
+  "Restore fci-mode when all popups have closed"
+  (when (and sanityinc/fci-mode-suppressed
+             (null popup-instances))
+    (setq sanityinc/fci-mode-suppressed nil)
+    (turn-on-fci-mode)))
+
+
 
 (beacon-mode 1) ;; enable beacon-mode (cursor highlighting)
 (auto-complete-mode 1) ;; enable auto-completion
@@ -119,6 +158,7 @@
 ;; Enable Powerline "Doom modeline"
 (require 'doom-modeline)
 (doom-modeline-mode 1)
+(setq column-number-mode 1)
 ;; Install necessary fonts for this:
 ;; TODO:  M-X, all-the-icons-install-fonts
 
