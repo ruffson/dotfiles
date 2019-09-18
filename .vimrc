@@ -111,6 +111,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dracula/vim', { 'as': 'dracula' },
 Plug 'tpope/vim-fugitive',
 "Plug 'ap/vim-buftabline'
+Plug 'jceb/vim-orgmode'
 call plug#end()
 
 " lightline.vim needs it
