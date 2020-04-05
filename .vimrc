@@ -42,7 +42,6 @@ set smartcase "UnLeSs YoU hAvE a CaPiTaL lEtTeR iN iT
 set cursorline "highlight line the cursor is in
 set number "show line number
 " set textwidth=90 "add newline when text reaches 90 chars
-set colorcolumn=80 "highlight column 90
 set formatoptions=l "won't break the line while in insert mode
 
 set splitbelow "horizontal splits open below the current pane
