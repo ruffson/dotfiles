@@ -21,8 +21,6 @@ set hidden "no longer prompts for save when opening a file to current buffer
 " sane swap/recovery files and full undo history
 set backupdir=~/.tmp//
 set directory=~/.tmp//
-set undofile
-set undodir=~/.tmp//
 
 set tabstop=4 "tab will show as x spaces
 set softtabstop=4 "tab will insert/delete x spaces
@@ -99,7 +97,6 @@ nnoremap J :bprev<cr>
 call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'djoshea/vim-autoread'
-Plug '907th/vim-auto-save'
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 "Plug 'terryma/vim-multiple-cursors'
