@@ -11,8 +11,8 @@ call plug#begin()
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'tpope/vim-commentary'
-  Plug 'joshdick/onedark.vim'
   Plug 'rakr/vim-one'
+  Plug 'ghifarit53/tokyonight-vim'
 call plug#end()
 " Plugins END
 "------------------------------------------------
@@ -69,8 +69,14 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
+
 syntax on
-colorscheme one
+
+
+let g:tokyonight_style = 'night' " available: night, storm
+let g:tokyonight_enable_italic = 1
+
+colorscheme tokyonight
 set background=dark
 set cursorline
 " set hidden
