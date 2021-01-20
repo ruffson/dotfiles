@@ -8,7 +8,7 @@
   let g:ale_sign_column_always = 1
   let g:ale_fix_on_save = 1
   let g:ale_sign_error = '✗'
-  " let g:ale_sign_warning = ''
+  let g:ale_sign_warning = ''
   let g:ale_linters = {'rust': ['analyzer']}
   let g:ale_fixers = {
   \   '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -20,7 +20,6 @@
   inoremap <silent><expr> <Tab>
         \ pumvisible() ? "\<C-n>" : "\<TAB>"
 
-  let g:user_emmet_leader_key='<C-/>'
 
   let g:lightline = {
       \ 'colorscheme': 'one',
@@ -62,17 +61,19 @@
     let g:lightline#bufferline#min_buffer_count=1
     let g:lightline#bufferline#show_number=1
     let g:lightline#bufferline#enable_devicons=1
-  " let g:lightline#ale#indicator_checking = "\uf110"
-  " let g:lightline#ale#indicator_infos = "\uf129"
-  " let g:lightline#ale#indicator_warnings = "\uf071"
-  " let g:lightline#ale#indicator_errors = "\uf05e"
-  " let g:lightline#ale#indicator_ok = "\uf00c"
-  " let g:lightline.separator = {
-      " \   'left': '', 'right': ''
-  " \}
-  " let g:lightline.subseparator = {
-      " \   'left': '', 'right': ''
-  " \}
+    let g:lightline#bufferline#enable_nerdfont=1
+  let g:lightline#ale#indicator_checking = "\uf110 "
+  let g:lightline#ale#indicator_infos = "\uf129 "
+  let g:lightline#ale#indicator_warnings = "\uf071 "
+  let g:lightline#ale#indicator_errors = "\uf05e "
+  let g:lightline#ale#indicator_ok = "\uf00c "
+  let g:lightline#bufferline#unicode_symbols=1
+  let g:lightline.separator = {
+    \   'left': '', 'right': ''
+        \}
+  let g:lightline.subseparator = {
+      \   'left': '', 'right': ''
+  \}
   function! LightlineFilename()
     return expand('%:t') !=# '' ? @% : '[No Name]'
   endfunction
