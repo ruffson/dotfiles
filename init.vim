@@ -20,70 +20,38 @@ let g:ale_fixers = {
 inoremap <silent><expr> <Tab>
             \ pumvisible() ? "\<C-n>" : "\<TAB>"
 
+let g:airline#extensions#ale#enabled = 1
+let g:airline_theme = "tokyonight"
+let g:airline#extensions#tabline#enabled = 1
+" air-line
+let g:airline_powerline_fonts = 1
 
-let g:lightline = {
-            \ 'active': {
-            \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
-            \ ,
-            \   'right': [ [ 'lineinfo' ],
-            \              ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ],
-            \              [ 'percent' ],
-            \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-            \ },
-            \ 'component_function': {
-            \   'filename': 'LightlineFilename',
-            \ },
-            \ 'component_expand': {
-            \   'buffers': 'lightline#bufferline#buffers',
-            \  'linter_checking': 'lightline#ale#checking',
-            \  'linter_infos': 'lightline#ale#infos',
-            \  'linter_warnings': 'lightline#ale#warnings',
-            \  'linter_errors': 'lightline#ale#errors',
-            \  'linter_ok': 'lightline#ale#ok',
-            \ },
-            \ 'component_type': {
-            \     'linter_checking': 'right',
-            \     'linter_infos': 'right',
-            \     'linter_warnings': 'warning',
-            \     'linter_errors': 'error',
-            \     'linter_ok': 'right',
-            \   'buffers': 'tabsel',
-            \ },
-            \ 'tabline': {
-            \   'left': [ ['buffers'] ],
-            \   'right': [ ['close'] ]
-            \ }
-            \ }
-" let buffers be clickable
-let g:lightline#bufferline#clickable=1
-let g:lightline#bufferline#shorten_path=1
-let g:lightline#bufferline#min_buffer_count=1
-let g:lightline#bufferline#show_number=1
-let g:lightline#bufferline#enable_devicons=1
-let g:lightline#bufferline#enable_nerdfont=1
-let g:lightline#ale#indicator_checking = "\uf110 "
-let g:lightline#ale#indicator_infos = "\uf129 "
-let g:lightline#ale#indicator_warnings = "\uf071 "
-let g:lightline#ale#indicator_errors = "\uf05e "
-let g:lightline#ale#indicator_ok = "\uf00c "
-let g:lightline#bufferline#unicode_symbols=1
-let g:lightline.separator = {
-            \   'left': '', 'right': ''
-            \}
-let g:lightline.subseparator = {
-            \   'left': '', 'right': ''
-            \}
-		let g:lightline.separator= {'left': "\ue0b0", 'right': "\ue0b2"}
-	let g:lightline.subseparator= {'left': "\ue0b1", 'right': "\ue0b3" }
-" let g:lightline = {
-" \ 'separator': { 'left': '', 'right': '' },
-" \ 'subseparator': { 'left': '>', 'right': '' }
-" \ }
-function! LightlineFilename()
-    return expand('%:t') !=# '' ? @% : '[No Name]'
-endfunction
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
 
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
 
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
 " -----------------------------------------------
 " END PLUGIN CONFIG
@@ -94,17 +62,16 @@ call plug#begin()
 Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'itchyny/lightline.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'mengelbrecht/lightline-bufferline'
 Plug 'tpope/vim-commentary'
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 " Plugins END
