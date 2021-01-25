@@ -53,6 +53,9 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
+" MINIMAP
+" let g:minimap_auto_start = 1
+
 " -----------------------------------------------
 " END PLUGIN CONFIG
 " -----------------------------------------------
@@ -69,10 +72,14 @@ Plug 'tpope/vim-commentary'
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
-Plug 'preservim/nerdtree'
+" Plug 'preservim/nerdtree'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
+Plug 'tpope/vim-fugitive'
+Plug 'machakann/vim-highlightedyank'
+Plug 'liuchengxu/vim-which-key'
+" Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 call plug#end()
 " Plugins END
 "------------------------------------------------
@@ -139,29 +146,69 @@ set cursorline
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <SPACE> <Nop>
-noremap <Up>    :1winc -<CR>
-noremap <Down>  :1winc +<CR>
-noremap <Left>  :1winc <<CR>
-noremap <Right> :1winc ><CR>
+noremap <Up>    :5winc -<CR>
+noremap <Down>  :5winc +<CR>
+noremap <Left>  :5winc <<CR>
+noremap <Right> :5winc ><CR>
 
-let mapleader = " "
+" let mapleader = " "
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+let g:which_key_map =  {}
+call which_key#register('<Space>', "g:which_key_map")
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
-nmap <leader><CR> :FZF<CR>
-nmap <silent> <leader><leader> :w!<CR>
+" Define prefix dictionary
+
+" Search mappings
+let g:which_key_map.s = {'name': 'search'}
+nmap <leader>sz :FZF<CR>
+map <leader>sg :Rg<space>
+let g:which_key_map.s.z = 'FZF-file-search'
+let g:which_key_map.s.g = 'grep-search'
+" File mappings
+let g:which_key_map.f = { 'name' : 'file' }
+nnoremap <silent> <leader>fs :update<CR>
+let g:which_key_map.f.s = 'save-file'
+
 " nmap <silent> <F11> <Plug>(ale_previous_wrap)
 " nmap <silent> <F23> <Plug>(ale_next_wrap)
-nnoremap <leader>g :ALEGoToDefinition<CR>
-nnoremap <leader>r :ALEFindReferences<CR>
+let g:which_key_map.a = {'name': 'ALE'}
+nnoremap <leader>an :ALENextWrap<CR>
+let g:which_key_map.a.n = 'next-problem'
+nnoremap <leader>ap :ALEPreviousWrap<CR>
+let g:which_key_map.a.p = 'previous-problem'
+nnoremap <leader>ag :ALEGoToDefinition<CR>
+let g:which_key_map.a.g = 'go-to-definition'
+nnoremap <leader>ar :ALEFindReferences<CR>
+let g:which_key_map.a.r = 'find-reference'
 
-map <leader>s :Rg<space>
 map <silent> <leader><ESC> :noh<CR>
+let g:which_key_map['<Esc>'] = 'clear-search'
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" NERDTREE
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+"CHADtree
+nnoremap <leader>b <cmd>CHADopen<cr>
+let g:which_key_map.b = 'file-browser'
+
+"GIT-gutter
+let g:which_key_map.h = {'name': 'hunks'}
+let g:which_key_map.h.p = 'preview'
+let g:which_key_map.h.u = 'undo'
+let g:which_key_map.h.s = 'stage'
+nnoremap <leader>hn :GitGutterNextHunk<CR>
+let g:which_key_map.h.n = 'next'
+nnoremap <leader>hN :GitGutterPrevHunk<CR>
+let g:which_key_map.h.N = 'previous'
+
+nnoremap <leader>g :Git<CR>
+let g:which_key_map.g = {'name': 'git'}
+"NERDTREE
+" nnoremap <leader>n :NERDTreeFocus<CR>
+" nnoremap <C-n> :NERDTree<CR>
+" nnoremap <C-t> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
