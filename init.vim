@@ -79,6 +79,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'machakann/vim-highlightedyank'
 Plug 'liuchengxu/vim-which-key'
+Plug 'kshenoy/vim-signature'
+Plug 'tpope/vim-unimpaired'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 call plug#end()
 " Plugins END
@@ -102,6 +104,8 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
+set splitbelow
+set splitright
 " Settings END
 "------------------------------------------------
 
@@ -207,6 +211,9 @@ let g:which_key_map.h.N = 'previous'
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
+
+nnoremap <Leader>l :ls<CR>:b<Space>
+let g:which_key_map.l = 'list-buffers'
 "NERDTREE
 " nnoremap <leader>n :NERDTreeFocus<CR>
 " nnoremap <C-n> :NERDTree<CR>
