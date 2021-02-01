@@ -56,6 +56,10 @@ let g:airline_symbols.linenr = ''
 " MINIMAP
 " let g:minimap_auto_start = 1
 
+" Workspaces
+let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
+let g:workspace_session_disable_on_args = 1
+
 " -----------------------------------------------
 " END PLUGIN CONFIG
 " -----------------------------------------------
@@ -81,7 +85,9 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'liuchengxu/vim-which-key'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-unimpaired'
+Plug 'qpkorr/vim-bufkill'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
+Plug 'thaerkh/vim-workspace'
 call plug#end()
 " Plugins END
 "------------------------------------------------
@@ -161,7 +167,6 @@ let g:maplocalleader = ','
 let g:which_key_map =  {}
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 " Define prefix dictionary
 
@@ -214,6 +219,10 @@ let g:which_key_map.g = {'name': 'git'}
 
 nnoremap <Leader>l :ls<CR>:b<Space>
 let g:which_key_map.l = 'list-buffers'
+
+nnoremap <leader>w :ToggleWorkspace<CR>
+let g:which_key_map.w = 'workspace-toggle'
+
 "NERDTREE
 " nnoremap <leader>n :NERDTreeFocus<CR>
 " nnoremap <C-n> :NERDTree<CR>
