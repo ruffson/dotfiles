@@ -96,7 +96,7 @@ call plug#end()
 " Settings START
 filetype plugin on
 set completeopt=menuone
-set mouse=a
+" set mouse=a
 set nobackup
 set nocompatible
 set noswapfile
@@ -195,10 +195,10 @@ let g:which_key_map.a.r = 'find-reference'
 
 map <silent> <leader><ESC> :noh<CR>
 let g:which_key_map['<Esc>'] = 'clear-search'
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-H> <C-W>h
+nnoremap <C-L> <C-W>l
 
 "CHADtree
 nnoremap <leader>b <cmd>CHADopen<cr>
