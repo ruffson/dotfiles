@@ -116,6 +116,7 @@ set splitbelow
 set splitright
 set scrolloff=5
 set clipboard+=unnamedplus
+set diffopt+=vertical
 
 " Settings END
 "------------------------------------------------
