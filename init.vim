@@ -23,6 +23,7 @@ inoremap <silent><expr> <Tab>
 let g:airline#extensions#ale#enabled = 1
 let g:airline_theme = "tokyonight"
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 " air-line
 let g:airline_powerline_fonts = 1
 
@@ -88,6 +89,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 Plug 'thaerkh/vim-workspace'
+Plug 'mhinz/vim-startify'
 call plug#end()
 " Plugins END
 "------------------------------------------------
@@ -112,6 +114,9 @@ set expandtab
 set smartindent
 set splitbelow
 set splitright
+set scrolloff=5
+set clipboard+=unnamedplus
+
 " Settings END
 "------------------------------------------------
 
