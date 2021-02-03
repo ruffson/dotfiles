@@ -61,6 +61,18 @@ let g:airline_symbols.linenr = ''
 let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
 let g:workspace_session_disable_on_args = 1
 
+" NERDTREE
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
+
+
+" If another buffer tries to replace NERDTree, put in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+let g:NERDTreeGitStatusUseNerdFonts = 1
+
 " -----------------------------------------------
 " END PLUGIN CONFIG
 " -----------------------------------------------
@@ -78,7 +90,10 @@ Plug 'ghifarit53/tokyonight-vim'
 Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'preservim/nerdtree'
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
@@ -90,6 +105,8 @@ Plug 'qpkorr/vim-bufkill'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 Plug 'thaerkh/vim-workspace'
 Plug 'mhinz/vim-startify'
+" should always go last
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " Plugins END
 "------------------------------------------------
@@ -207,8 +224,8 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
 "CHADtree
-nnoremap <leader>b <cmd>CHADopen<cr>
-let g:which_key_map.b = 'file-browser'
+" nnoremap <leader>b <cmd>CHADopen<cr>
+" let g:which_key_map.b = 'file-browser'
 
 "GIT-gutter
 let g:which_key_map.h = {'name': 'hunks'}
@@ -230,7 +247,8 @@ nnoremap <leader>w :ToggleWorkspace<CR>
 let g:which_key_map.w = 'workspace-toggle'
 
 "NERDTREE
-" nnoremap <leader>n :NERDTreeFocus<CR>
-" nnoremap <C-n> :NERDTree<CR>
-" nnoremap <C-t> :NERDTreeToggle<CR>
-" nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <leader>b :NERDTreeFocus<CR>
+let g:which_key_map.b = 'file-browser'
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
