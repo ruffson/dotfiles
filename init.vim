@@ -60,8 +60,9 @@ let g:airline_symbols.linenr = ''
 " Workspaces
 let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
 let g:workspace_session_disable_on_args = 1
+let g:workspace_persist_undo_history = 0
 
-" NERDTREE
+"NERDTREE
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
@@ -88,7 +89,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'dense-analysis/ale'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 " Plug 'preservim/nerdtree'
 " Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'preservim/nerdtree'
@@ -140,8 +141,8 @@ set diffopt+=vertical
 
 "------------------------------------------------
 " persist START
+" set undodir=~/.local/share/nvim/undo
 set undofile " Maintain undo history between sessions
-set undodir=~/.vim/undodir
 
 " Persist cursor
 autocmd BufReadPost *
