@@ -105,6 +105,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'dracula/vim', { 'as': 'dracula' },
+Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-fugitive',
 "Plug 'ap/vim-buftabline'
 Plug 'jceb/vim-orgmode'
