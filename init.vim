@@ -51,6 +51,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> ga <Plug>(coc-codeaction-selected)
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -172,9 +173,11 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
+Plug 'thaerkh/vim-indentguides'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 Plug 'thaerkh/vim-workspace'
-Plug 'mhinz/vim-startify'
+Plug 'mbbill/undotree'
+" Plug 'mhinz/vim-startify'
 " should always go last
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -211,6 +214,7 @@ set diffopt+=vertical
 "------------------------------------------------
 " persist START
 set undofile " Maintain undo history between sessions
+set undodir=~/.local/share/nvim/undo
 
 " Persist cursor
 autocmd BufReadPost *
@@ -307,4 +311,7 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
 
-let g:which_key_map.o = {'name': 'fOrmat'}
+let g:which_key_map.o = {'name': 'format'}
+
+nnoremap <leader>u :UndotreeToggle<CR>
+let g:which_key_map.u = 'Undo tree'
