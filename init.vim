@@ -72,7 +72,7 @@ function! CocMinimalStatus() abort
   return get(g:, 'coc_status', '')
 endfunction
 
-let g:airline_section_c = '%t %#LineNr#%{CocMinimalStatus()}'
+" let g:airline_section_c = '%t %#LineNr#%{CocMinimalStatus()}'
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -101,28 +101,11 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
 
 " airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+let g:airline_left_sep = "\uE0Bc"
+let g:airline_left_alt_sep = "\ue216"
+let g:airline_right_sep = "\ue0ba"
 
 " MINIMAP
 " let g:minimap_auto_start = 1
