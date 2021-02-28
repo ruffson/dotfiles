@@ -112,6 +112,7 @@ let g:airline_right_sep = "\ue0ba"
 
 " Workspaces
 let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
+let g:workspace_autocreate = 1
 let g:workspace_session_disable_on_args = 1
 let g:workspace_persist_undo_history = 0
 let g:workspace_autosave = 0
@@ -160,6 +161,7 @@ Plug 'thaerkh/vim-indentguides'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 Plug 'thaerkh/vim-workspace'
 Plug 'mbbill/undotree'
+Plug 'mg979/vim-visual-multi'
 " Plug 'mhinz/vim-startify'
 " should always go last
 Plug 'ryanoasis/vim-devicons'
