@@ -102,11 +102,6 @@ if !exists('g:airline_symbols')
 endif
 
 
-" airline symbols
-let g:airline_left_sep = "\uE0Bc"
-let g:airline_left_alt_sep = "\ue216"
-let g:airline_right_sep = "\ue0ba"
-
 " MINIMAP
 " let g:minimap_auto_start = 1
 
