@@ -38,9 +38,6 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
-" Ignore file types for indent guides
-let g:indentguides_ignorelist = ['text','vim','md', 'json']
-
 " -----------------------------------------------
 " END PLUGIN CONFIG
 " -----------------------------------------------
@@ -49,8 +46,6 @@ let g:indentguides_ignorelist = ['text','vim','md', 'json']
 call plug#begin()
 Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
@@ -93,8 +88,8 @@ call plug#end()
 
 "------------------------------------------------
 " Settings START
-filetype plugin on
-set completeopt=menuone
+filetype plugin indent on
+" set completeopt=menuone
 " set mouse=a
 set nobackup
 set nocompatible
@@ -154,18 +149,21 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 EOF
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" use <Tab> as trigger keys
-imap <Tab> <Plug>(completion_smart_tab)
-imap <S-Tab> <Plug>(completion_smart_s_tab)
 " Code navigation shortcuts
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" use <Tab> as trigger keys
+imap <Tab> <Plug>(completion_smart_tab)
+imap <S-Tab> <Plug>(completion_smart_s_tab)
+" have a fixed column for the diagnostics to appear in
+" this removes the jitter when warnings/errors flow in
+set signcolumn=yes
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold
 set updatetime=300
@@ -173,11 +171,8 @@ set updatetime=300
 autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " Goto previous/next diagnostic warning/error
-nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-" have a fixed column for the diagnostics to appear in
-" this removes the jitter when warnings/errors flow in
-set signcolumn=yes
+nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 " Enable type inlay hints
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
@@ -202,9 +197,6 @@ nnoremap <silent>gr :Lspsaga rename<CR>
 " Preview Definition
 nnoremap <silent> gd :Lspsaga preview_definition<CR>
 " JUMP AND SHOW DIAGNOSTICS
-nnoremap <silent> <leader>cd :Lspsaga show_line_diagnostics<CR>
-nnoremap <silent> [e :Lspsaga diagnostic_jump_next<CR>
-nnoremap <silent> ]e :Lspsaga diagnostic_jump_prev<CR>
 " END LSP config
 " Configure Formatter 
 "
@@ -286,7 +278,6 @@ let g:maplocalleader = ','
 let g:which_key_map =  {}
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-
 " Define prefix dictionary
 
 " Search mappings
