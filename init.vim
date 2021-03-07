@@ -124,6 +124,9 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
+" Ignore file types for indent guides
+let g:indentguides_ignorelist = ['text','vim','md', 'json']
+
 " -----------------------------------------------
 " END PLUGIN CONFIG
 " -----------------------------------------------
@@ -157,7 +160,8 @@ Plug 'thaerkh/vim-indentguides'
 Plug 'thaerkh/vim-workspace'
 Plug 'mbbill/undotree'
 Plug 'mg979/vim-visual-multi'
-" Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
+Plug 'JuliaEditorSupport/julia-vim'
 " should always go last
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
