@@ -1,50 +1,7 @@
-"" -----------------------------------------------
-" PLUGIN CONFIG
-" -----------------------------------------------
-
-
-
-
-"" air-line
-let g:airline_theme = "tokyonight"
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-
-" MINIMAP
-" let g:minimap_auto_start = 1
-
-" Workspaces
-let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
-let g:workspace_autocreate = 1
-let g:workspace_session_disable_on_args = 1
-let g:workspace_persist_undo_history = 0
-let g:workspace_autosave = 0
-
-"NERDTREE
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
-
-
-" If another buffer tries to replace NERDTree, put in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-let g:NERDTreeGitStatusUseNerdFonts = 1
-
-" -----------------------------------------------
-" END PLUGIN CONFIG
-" -----------------------------------------------
 
 " Plugins START
 call plug#begin()
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -58,6 +15,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'liuchengxu/vim-which-key'
 Plug 'kshenoy/vim-signature'
@@ -68,17 +26,15 @@ Plug 'glepnir/indent-guides.nvim'
 Plug 'thaerkh/vim-workspace'
 Plug 'mbbill/undotree'
 Plug 'mg979/vim-visual-multi'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
-" Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
-Plug 'glepnir/lspsaga.nvim'
-" Extensions to built-in LSP, for example, providing type inlay hints
 Plug 'nvim-lua/lsp_extensions.nvim'
-" Autocompletion framework for built-in LSP
 Plug 'nvim-lua/completion-nvim'
+Plug 'glepnir/lspsaga.nvim'
 Plug 'mhartington/formatter.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -113,6 +69,42 @@ set diffopt+=vertical
 " Settings END
 "------------------------------------------------
 
+"" -----------------------------------------------
+" PLUGIN CONFIG
+" -----------------------------------------------
+"" air-line
+let g:airline_theme = "tokyonight"
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+
+" MINIMAP
+" let g:minimap_auto_start = 1
+
+" Workspaces
+let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
+let g:workspace_autocreate = 1
+let g:workspace_session_disable_on_args = 1
+let g:workspace_persist_undo_history = 0
+let g:workspace_autosave = 0
+
+"NERDTREE
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
+
+
+" If another buffer tries to replace NERDTree, put in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+let g:NERDTreeGitStatusUseNerdFonts = 1
+
 
 " RUST config
 " Set completeopt to have a better completion experience
@@ -121,14 +113,17 @@ set diffopt+=vertical
 " noinsert: Do not insert text until a selection is made
 " noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
-
+" Syntax highlighting for embedded lua
+let g:vimsyn_embed= 'l'
 " Avoid showing extra messages when using completion
-set shortmess+=c
+" set shortmess+=c
 
 " Configure LSP
 " https://github.com/neovim/nvim-lspconfig#rust_analyzer
-lua <<EOF
+autocmd Filetype julia let g:deoplete#enable_at_startup = 1
+autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
+lua <<EOF
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
 
@@ -139,16 +134,22 @@ end
 
 -- Enable rust_analyzer
 nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+-- Enable Julials
+nvim_lsp.julials.setup({on_attach=on_attach})
+
 
 -- Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-  }
-)
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+--   vim.lsp.diagnostic.on_publish_diagnostics, {
+--     virtual_text = true,
+--     signs = true,
+--     update_in_insert = true,
+--   }
+-- )
 EOF
+
+" autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
 " Code navigation shortcuts
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
@@ -174,7 +175,7 @@ autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 " Enable type inlay hints
-autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
 " RUST end
 "LSP config
@@ -215,7 +216,12 @@ require('formatter').setup(
           stdin = true
         }
       end
-    }}})
+      }, julia = {
+
+
+      }
+
+    }})
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
@@ -227,6 +233,9 @@ EOF
 "
 " End Formatter
 ""------------------------------------------------
+" -----------------------------------------------
+" END PLUGIN CONFIG
+" -----------------------------------------------
 " persist START
 set undofile " Maintain undo history between sessions
 set undodir=~/.local/share/nvim/undo
@@ -299,14 +308,14 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
 "GIT-gutter
-let g:which_key_map.h = {'name': 'hunks'}
-let g:which_key_map.h.p = 'preview'
-let g:which_key_map.h.u = 'undo'
-let g:which_key_map.h.s = 'stage'
-nnoremap <leader>hn :GitGutterNextHunk<CR>
-let g:which_key_map.h.n = 'next'
-nnoremap <leader>hN :GitGutterPrevHunk<CR>
-let g:which_key_map.h.N = 'previous'
+" let g:which_key_map.h = {'name': 'hunks'}
+" let g:which_key_map.h.p = 'preview'
+" let g:which_key_map.h.u = 'undo'
+" let g:which_key_map.h.s = 'stage'
+" nnoremap <leader>hn :GitGutterNextHunk<CR>
+" let g:which_key_map.h.n = 'next'
+" nnoremap <leader>hN :GitGutterPrevHunk<CR>
+" let g:which_key_map.h.N = 'previous'
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
