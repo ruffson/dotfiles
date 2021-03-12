@@ -21,20 +21,17 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
-Plug 'glepnir/indent-guides.nvim'
-
+" Plug 'norcalli/snippets.nvim'
 Plug 'thaerkh/vim-workspace'
 Plug 'mbbill/undotree'
 Plug 'mg979/vim-visual-multi'
-" Plug 'mhinz/vim-startify'
 Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
-Plug 'glepnir/lspsaga.nvim'
+" Plug 'glepnir/lspsaga.nvim'
 Plug 'mhartington/formatter.nvim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -83,9 +80,6 @@ if !exists('g:airline_symbols')
 endif
 
 
-" MINIMAP
-" let g:minimap_auto_start = 1
-
 " Workspaces
 let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
 let g:workspace_autocreate = 1
@@ -105,24 +99,15 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
-
-" RUST config
-" Set completeopt to have a better completion experience
-" :help completeopt
-" menuone: popup even when there's only one match
-" noinsert: Do not insert text until a selection is made
-" noselect: Do not select, force user to select one from the menu
-set completeopt=menuone,noinsert,noselect
 " Syntax highlighting for embedded lua
 let g:vimsyn_embed= 'l'
+
+" LSP config
+set completeopt=menuone,noinsert,noselect
 " Avoid showing extra messages when using completion
-" set shortmess+=c
+set shortmess+=c
 
 " Configure LSP
-" https://github.com/neovim/nvim-lspconfig#rust_analyzer
-autocmd Filetype julia let g:deoplete#enable_at_startup = 1
-autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
 lua <<EOF
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
@@ -139,67 +124,54 @@ nvim_lsp.julials.setup({on_attach=on_attach})
 
 
 -- Enable diagnostics
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---   vim.lsp.diagnostic.on_publish_diagnostics, {
---     virtual_text = true,
---     signs = true,
---     update_in_insert = true,
---   }
--- )
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = true,
+    signs = true,
+    update_in_insert = true,
+  }
+)
 EOF
 
-" autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
 " Code navigation shortcuts
+" as found in :help lsp
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" use <Tab> as trigger keys
-imap <Tab> <Plug>(completion_smart_tab)
-imap <S-Tab> <Plug>(completion_smart_s_tab)
+" rust-analyzer does not yet support goto declaration
+" re-mapped `gd` to definition
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+" use <tab> and <s-tab> to navigate through popup menu
+inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" use <tab> as trigger keys
+imap <tab> <plug>(completion_smart_tab)
+imap <s-tab> <plug>(completion_smart_s_tab)
 " have a fixed column for the diagnostics to appear in
 " this removes the jitter when warnings/errors flow in
 set signcolumn=yes
-" Set updatetime for CursorHold
-" 300ms of no cursor movement to trigger CursorHold
+" set updatetime for cursorhold
+" 300ms of no cursor movement to trigger cursorhold
 set updatetime=300
-" Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" show diagnostic popup on cursor hold
+autocmd cursorhold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
-" Goto previous/next diagnostic warning/error
-nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-" Enable type inlay hints
-autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
-\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
-" RUST end
-"LSP config
-"Async Lsp Finder
-nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
-nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-"Code Action
-nnoremap <silent>ga :Lspsaga code_action<CR>
-vnoremap <silent>ga :<C-U>Lspsaga range_code_action<CR>
-" Hover Docs
-nnoremap <silent>K :Lspsaga hover_doc<CR>
-" -- scroll down hover doc or scroll in definition preview
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-" -- scroll up hover doc
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-" SignatureHelp
-nnoremap <silent> gs :Lspsaga signature_help<CR>
-" Rename
-nnoremap <silent>gr :Lspsaga rename<CR>
-" Preview Definition
-nnoremap <silent> gd :Lspsaga preview_definition<CR>
-" JUMP AND SHOW DIAGNOSTICS
-" END LSP config
-" Configure Formatter 
+" goto previous/next diagnostic warning/error
+nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+" enable type inlay hints
+autocmd cursormoved,insertleave,bufenter,bufwinenter,tabenter,bufwritepost *.rs
+\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "comment", enabled = {"typehint", "chaininghint", "parameterhint"} }
+" " rust end
+"lsp config
+
+"" Configure Formatter 
 "
 "
 lua << EOF
