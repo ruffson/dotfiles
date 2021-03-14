@@ -1,7 +1,7 @@
 
 " Plugins START
 call plug#begin()
-" Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -117,10 +117,19 @@ local on_attach = function(client)
     require'completion'.on_attach(client)
 end
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 -- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+nvim_lsp.rust_analyzer.setup({
+    capabilities=capabilities,
+    on_attach=on_attach
+    })
 -- Enable Julials
-nvim_lsp.julials.setup({on_attach=on_attach})
+nvim_lsp.julials.setup({
+    capabilities=capabilities,
+    on_attach=on_attach
+    })
 
 
 -- Enable diagnostics
@@ -143,6 +152,10 @@ nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 " rust-analyzer does not yet support goto declaration
 " re-mapped `gd` to definition
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
@@ -158,9 +171,9 @@ imap <s-tab> <plug>(completion_smart_s_tab)
 set signcolumn=yes
 " set updatetime for cursorhold
 " 300ms of no cursor movement to trigger cursorhold
-set updatetime=300
+" set updatetime=300
 " show diagnostic popup on cursor hold
-autocmd cursorhold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" autocmd cursorhold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " goto previous/next diagnostic warning/error
 nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
@@ -280,14 +293,14 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
 "GIT-gutter
-" let g:which_key_map.h = {'name': 'hunks'}
-" let g:which_key_map.h.p = 'preview'
-" let g:which_key_map.h.u = 'undo'
-" let g:which_key_map.h.s = 'stage'
-" nnoremap <leader>hn :GitGutterNextHunk<CR>
-" let g:which_key_map.h.n = 'next'
-" nnoremap <leader>hN :GitGutterPrevHunk<CR>
-" let g:which_key_map.h.N = 'previous'
+let g:which_key_map.h = {'name': 'hunks'}
+let g:which_key_map.h.p = 'preview'
+let g:which_key_map.h.u = 'undo'
+let g:which_key_map.h.s = 'stage'
+nnoremap <leader>hn :GitGutterNextHunk<CR>
+let g:which_key_map.h.n = 'next'
+nnoremap <leader>hN :GitGutterPrevHunk<CR>
+let g:which_key_map.h.N = 'previous'
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
@@ -299,11 +312,7 @@ nnoremap <leader>w :ToggleWorkspace<CR>
 let g:which_key_map.w = 'workspace-toggle'
 
 "NERDTREE
-" nnoremap <leader>b :NERDTreeFocus<CR>
-" let g:which_key_map.b = 'file-browser'
-" nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-" nnoremap <C-f> :NERDTreeFind<CR>
 
 
 let g:which_key_map.o = {'name': 'format'}
