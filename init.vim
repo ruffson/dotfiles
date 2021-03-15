@@ -29,9 +29,11 @@ Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
-Plug 'nvim-lua/completion-nvim'
-" Plug 'glepnir/lspsaga.nvim'
+" Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
+Plug 'glepnir/lspsaga.nvim'
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -103,7 +105,7 @@ let g:NERDTreeGitStatusUseNerdFonts = 1
 let g:vimsyn_embed= 'l'
 
 " LSP config
-set completeopt=menuone,noinsert,noselect
+set completeopt=menu,menuone,noselect
 " Avoid showing extra messages when using completion
 set shortmess+=c
 
@@ -113,9 +115,8 @@ lua <<EOF
 local nvim_lsp = require'lspconfig'
 
 -- function to attach completion when setting up lsp
-local on_attach = function(client)
-    require'completion'.on_attach(client)
-end
+-- local on_attach = function(client)
+-- end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -123,19 +124,35 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- Enable rust_analyzer
 nvim_lsp.rust_analyzer.setup({
     capabilities=capabilities,
-    on_attach=on_attach
+    -- on_attach=on_attach
+
     })
+
 -- Enable Julials
 nvim_lsp.julials.setup({
     capabilities=capabilities,
-    on_attach=on_attach
+    -- on_attach=on_attach
+    settings = {
+        ["rust-analyzer"] = {
+            assist = {
+                importMergeBehavior = "last",
+                importPrefix = "by_self",
+            },
+            cargo = {
+                loadOutDirsFromCheck = true
+            },
+            procMacro = {
+                enable = true
+            },
+        }
+    }
     })
 
 
 -- Enable diagnostics
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
+    virtual_text = false,
     signs = true,
     update_in_insert = true,
   }
@@ -144,43 +161,103 @@ EOF
 
 " Code navigation shortcuts
 " as found in :help lsp
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
 " Goto previous/next diagnostic warning/error
-nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 " rust-analyzer does not yet support goto declaration
 " re-mapped `gd` to definition
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
 "nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 " use <tab> and <s-tab> to navigate through popup menu
+
+
+" Completion
+lua <<EOF
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    vsnip = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    spell = true;
+    tags = true;
+    snippets_nvim = true;
+    treesitter = true;
+
+  };
+}
+EOF
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 " use <tab> as trigger keys
-imap <tab> <plug>(completion_smart_tab)
-imap <s-tab> <plug>(completion_smart_s_tab)
-" have a fixed column for the diagnostics to appear in
-" this removes the jitter when warnings/errors flow in
-set signcolumn=yes
-" set updatetime for cursorhold
-" 300ms of no cursor movement to trigger cursorhold
+"
+
+
+
+
+""LSP config
+"Async Lsp Finder
+nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
+nnoremap <silent> gh :Lspsaga lsp_finder<CR>
+"Code Action
+nnoremap <silent>ga :Lspsaga code_action<CR>
+vnoremap <silent>ga :<C-U>Lspsaga range_code_action<CR>
+" Hover Docs
+nnoremap <silent>K :Lspsaga hover_doc<CR>
+" -- scroll down hover doc or scroll in definition preview
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+" -- scroll up hover doc
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+" SignatureHelp
+nnoremap <silent> gs :Lspsaga signature_help<CR>
+" Rename
+nnoremap <silent>gr :Lspsaga rename<CR>
+" Preview Definition
+nnoremap <silent> gd :Lspsaga preview_definition<CR>
+nnoremap <silent> [g :Lspsaga diagnostic_jump_next<CR>
+nnoremap <silent> ]g :Lspsaga diagnostic_jump_prev<CR>
+
+
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
 " set updatetime=300
-" show diagnostic popup on cursor hold
-" autocmd cursorhold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" Show diagnostic popup on cursor hover
+ autocmd CursorHold * lua vim.lsp.diagnostic._define_default_signs_and_highlights()
 
 " goto previous/next diagnostic warning/error
-nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
-nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+" nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+" nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
 " enable type inlay hints
-autocmd cursormoved,insertleave,bufenter,bufwinenter,tabenter,bufwritepost *.rs
-\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "comment", enabled = {"typehint", "chaininghint", "parameterhint"} }
 " " rust end
 "lsp config
 
@@ -233,6 +310,8 @@ autocmd BufReadPost *
 " persist END
 "------------------------------------------------
 
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
+\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
 "------------------------------------------------
 " Theme START
 
@@ -291,6 +370,11 @@ nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
+
+" LSP saga
+nnoremap <silent> <leader>d :Lspsaga show_line_diagnostics<CR>
+let g:which_key_map.d = {'name': 'diagnostics'}
+
 
 "GIT-gutter
 let g:which_key_map.h = {'name': 'hunks'}
