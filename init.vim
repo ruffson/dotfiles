@@ -163,7 +163,7 @@ EOF
 " as found in :help lsp
 " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
 " nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 " nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 " nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 " nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
@@ -171,11 +171,11 @@ nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 " nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 " nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
 " Goto previous/next diagnostic warning/error
-nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+" nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+" nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 " rust-analyzer does not yet support goto declaration
 " re-mapped `gd` to definition
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.definition()<CR>
 "nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 " use <tab> and <s-tab> to navigate through popup menu
 
@@ -381,10 +381,8 @@ let g:which_key_map.h = {'name': 'hunks'}
 let g:which_key_map.h.p = 'preview'
 let g:which_key_map.h.u = 'undo'
 let g:which_key_map.h.s = 'stage'
-nnoremap <leader>hn :GitGutterNextHunk<CR>
-let g:which_key_map.h.n = 'next'
-nnoremap <leader>hN :GitGutterPrevHunk<CR>
-let g:which_key_map.h.N = 'previous'
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
