@@ -1,7 +1,7 @@
 
 " Plugins START
 call plug#begin()
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -29,11 +29,15 @@ Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
 " Plug 'nvim-lua/completion-nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
 Plug 'glepnir/lspsaga.nvim'
+" Plug 'Yggdroot/indentLine'
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -44,8 +48,6 @@ call plug#end()
 "------------------------------------------------
 " Settings START
 filetype plugin indent on
-" set completeopt=menuone
-" set mouse=a
 set nobackup
 set nocompatible
 set noswapfile
@@ -114,24 +116,26 @@ lua <<EOF
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
 
--- function to attach completion when setting up lsp
--- local on_attach = function(client)
--- end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
--- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({
-    capabilities=capabilities,
-    -- on_attach=on_attach
+-- Enable diagnostics
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+  }
+)
 
-    })
-
--- Enable Julials
+-- Enable julials
 nvim_lsp.julials.setup({
     capabilities=capabilities,
-    -- on_attach=on_attach
+    })
+
+-- Enable rust analyzer
+nvim_lsp.rust_analyzer.setup({
+    capabilities=capabilities,
     settings = {
         ["rust-analyzer"] = {
             assist = {
@@ -144,19 +148,17 @@ nvim_lsp.julials.setup({
             procMacro = {
                 enable = true
             },
+            diagnostics = {
+                enable = true,
+                disabled = {"unresolved-proc-macro"},
+                -- enableExperimental = true,
+                 -- warningAsHint = {},
+            },
         }
     }
     })
 
 
--- Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = false,
-    signs = true,
-    update_in_insert = true,
-  }
-)
 EOF
 
 " Code navigation shortcuts
@@ -212,6 +214,11 @@ require'compe'.setup {
 }
 EOF
 
+" GitSigns setup
+lua << EOF
+require('gitsigns').setup()
+EOF
+
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 " inoremap <silent><expr> <C-e>     compe#close('<C-e>')
@@ -244,8 +251,8 @@ nnoremap <silent> gs :Lspsaga signature_help<CR>
 nnoremap <silent>gr :Lspsaga rename<CR>
 " Preview Definition
 nnoremap <silent> gd :Lspsaga preview_definition<CR>
-nnoremap <silent> [g :Lspsaga diagnostic_jump_next<CR>
-nnoremap <silent> ]g :Lspsaga diagnostic_jump_prev<CR>
+nnoremap <silent> ]g :Lspsaga diagnostic_jump_next<CR>
+nnoremap <silent> [g :Lspsaga diagnostic_jump_prev<CR>
 
 
 " Set updatetime for CursorHold
@@ -377,12 +384,22 @@ let g:which_key_map.d = {'name': 'diagnostics'}
 
 
 "GIT-gutter
+" let g:which_key_map.h = {'name': 'hunks'}
+" let g:which_key_map.h.p = 'preview'
+" let g:which_key_map.h.u = 'undo'
+" let g:which_key_map.h.s = 'stage'
+" nmap ]h <Plug>(GitGutterNextHunk)
+" nmap [h <Plug>(GitGutterPrevHunk)
+" GIT SIGNS
 let g:which_key_map.h = {'name': 'hunks'}
 let g:which_key_map.h.p = 'preview'
+let g:which_key_map.h.b = 'blame'
 let g:which_key_map.h.u = 'undo'
+let g:which_key_map.h.r = 'reset hunk'
 let g:which_key_map.h.s = 'stage'
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap [h <Plug>(GitGutterPrevHunk)
+let g:which_key_map.h.R = 'reset buffer'
+" nmap ]h <Plug>(GitGutterNextHunk)
+" nmap [h <Plug>(GitGutterPrevHunk)
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
