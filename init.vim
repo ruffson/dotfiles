@@ -23,7 +23,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
 " Plug 'norcalli/snippets.nvim'
 Plug 'thaerkh/vim-workspace'
-Plug 'mbbill/undotree'
+" Plug 'mbbill/undotree'
 Plug 'mg979/vim-visual-multi'
 Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
@@ -44,7 +44,6 @@ Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " Plugins END
 "------------------------------------------------
-
 "------------------------------------------------
 " Settings START
 filetype plugin indent on
@@ -259,7 +258,7 @@ nnoremap <silent> [g :Lspsaga diagnostic_jump_prev<CR>
 " 300ms of no cursor movement to trigger CursorHold
 " set updatetime=300
 " Show diagnostic popup on cursor hover
- autocmd CursorHold * lua vim.lsp.diagnostic._define_default_signs_and_highlights()
+autocmd CursorHold * lua vim.lsp.diagnostic._define_default_signs_and_highlights()
 
 " goto previous/next diagnostic warning/error
 " nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
