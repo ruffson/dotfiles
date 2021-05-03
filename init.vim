@@ -6,7 +6,8 @@ Plug 'cespare/vim-toml'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
-Plug 'ghifarit53/tokyonight-vim'
+" Plug 'ghifarit53/tokyonight-vim'
+Plug 'folke/tokyonight.nvim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
 Plug 'preservim/nerdtree'
@@ -37,6 +38,7 @@ Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
 Plug 'glepnir/lspsaga.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 " Plug 'Yggdroot/indentLine'
 " --> Neovim 5
 " should always go last
@@ -157,6 +159,10 @@ nvim_lsp.rust_analyzer.setup({
     }
     })
 
+-- Enable pyright
+require'lspconfig'.pyright.setup{
+capabilities=capabilities,
+}
 
 EOF
 
