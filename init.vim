@@ -68,6 +68,9 @@ set scrolloff=5
 set clipboard+=unnamedplus
 set diffopt+=vertical
 
+set foldmethod=syntax
+set nofoldenable    " disable folding
+
 " Settings END
 "------------------------------------------------
 
