@@ -1,12 +1,10 @@
 
 " Plugins START
 call plug#begin()
-" Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
-" Plug 'ghifarit53/tokyonight-vim'
 Plug 'folke/tokyonight.nvim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
@@ -22,16 +20,16 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
-" Plug 'norcalli/snippets.nvim'
 Plug 'thaerkh/vim-workspace'
 " Plug 'mbbill/undotree'
-Plug 'mg979/vim-visual-multi'
+" Plug 'mg979/vim-visual-multi'
 Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'Yggdroot/indentLine'
 Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
 " Plug 'nvim-lua/completion-nvim'
 Plug 'hrsh7th/nvim-compe'
@@ -39,7 +37,6 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-" Plug 'Yggdroot/indentLine'
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
