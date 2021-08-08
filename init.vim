@@ -29,8 +29,8 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'Yggdroot/indentLine'
-Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
+" Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim',
 " Plug 'nvim-lua/completion-nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
@@ -75,7 +75,7 @@ set nofoldenable    " disable folding
 " PLUGIN CONFIG
 " -----------------------------------------------
 "" air-line
-let g:airline_theme = "tokyonight"
+" let g:airline_theme = "tokyonight"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:airline_powerline_fonts = 1
@@ -182,7 +182,6 @@ EOF
 " nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 " rust-analyzer does not yet support goto declaration
 " re-mapped `gd` to definition
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.definition()<CR>
 "nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 " use <tab> and <s-tab> to navigate through popup menu
 
@@ -256,9 +255,15 @@ nnoremap <silent> gs :Lspsaga signature_help<CR>
 nnoremap <silent>gr :Lspsaga rename<CR>
 " Preview Definition
 nnoremap <silent> gd :Lspsaga preview_definition<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> ]g :Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> [g :Lspsaga diagnostic_jump_prev<CR>
 
+"-- scroll down hover doc or scroll in definition preview
+
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+"-- scroll up hover doc
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold
