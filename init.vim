@@ -37,6 +37,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'kristijanhusak/orgmode.nvim'
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -66,7 +67,7 @@ set clipboard+=unnamedplus
 set diffopt+=vertical
 
 set foldmethod=syntax
-set nofoldenable    " disable folding
+" set nofoldenable    " disable folding
 
 " Settings END
 "------------------------------------------------
@@ -216,6 +217,15 @@ require'compe'.setup {
 
   };
 }
+EOF
+
+
+" ORGMODE
+lua << EOF
+require('orgmode').setup({
+  org_agenda_files = {'~/Documents/Notes/org/*'},
+  org_default_notes_file = '~/Documents/Notes/org/input.org',
+})
 EOF
 
 " GitSigns setup
