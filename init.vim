@@ -8,9 +8,6 @@ Plug 'folke/tokyonight.nvim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
 
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'machakann/vim-highlightedyank'
@@ -20,7 +17,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
 Plug 'thaerkh/vim-workspace'
 Plug 'JuliaEditorSupport/julia-vim'
-" --> Neovim 5 only:
+
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -34,14 +31,22 @@ Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 
 Plug 'nvim-telescope/telescope.nvim'
-
 Plug 'nvim-lualine/lualine.nvim'
 
-Plug 'hrsh7th/vim-vsnip'
+" CMP completion (formerly compe)
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
+" vsnip snippets
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
 Plug 'mhartington/formatter.nvim'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-" --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -128,8 +133,124 @@ let g:vimsyn_embed= 'l'
 " LSP config
 set completeopt=menu,menuone,noselect
 " Avoid showing extra messages when using completion
-set shortmess+=c
+" set shortmess+=c
 
+" CMP COMPLETION SETUP (formerly compe)
+lua <<EOF
+  -- Setup nvim-cmp.
+
+  local has_words_before = function()
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  end
+
+  local cmp = require'cmp'
+  local luasnip = require("luasnip")
+
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end,
+    },
+    mapping = {
+      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      -- TAB/shift-TAB completion (luascript specific)
+      ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Setup lspconfig.
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+
+  local nvim_lsp = require'lspconfig'
+
+  -- Enable julials
+  nvim_lsp.julials.setup({
+      capabilities=capabilities,
+      })
+
+  -- Enable rust analyzer
+  nvim_lsp.rust_analyzer.setup({
+      capabilities=capabilities,
+      settings = {
+          ["rust-analyzer"] = {
+              assist = {
+                  importMergeBehavior = "last",
+                  importPrefix = "by_self",
+              },
+              cargo = {
+                  loadOutDirsFromCheck = true
+              },
+              procMacro = {
+                  enable = true
+              },
+              diagnostics = {
+                  enable = true,
+                  disabled = {"unresolved-proc-macro"},
+              },
+          }
+      }
+    })
+
+  nvim_lsp.pyright.setup{
+    capabilities=capabilities,
+  }
+
+EOF
 
 " ----------CONFIGURE TREESITTER----------
 " lua << EOF
@@ -152,10 +273,10 @@ EOF
 " ----------Configure LSP----------
 lua <<EOF
 -- nvim_lsp object
-local nvim_lsp = require'lspconfig'
+--local nvim_lsp = require'lspconfig'
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+--local capabilities = vim.lsp.protocol.make_client_capabilities()
+--capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Enable diagnostics
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -166,40 +287,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
--- Enable julials
-nvim_lsp.julials.setup({
-    capabilities=capabilities,
-    })
-
--- Enable rust analyzer
-nvim_lsp.rust_analyzer.setup({
-    capabilities=capabilities,
-    settings = {
-        ["rust-analyzer"] = {
-            assist = {
-                importMergeBehavior = "last",
-                importPrefix = "by_self",
-            },
-            cargo = {
-                loadOutDirsFromCheck = true
-            },
-            procMacro = {
-                enable = true
-            },
-            diagnostics = {
-                enable = true,
-                disabled = {"unresolved-proc-macro"},
-                -- enableExperimental = true,
-                 -- warningAsHint = {},
-            },
-        }
-    }
-    })
-
--- Enable pyright
-require'lspconfig'.pyright.setup{
-capabilities=capabilities,
-}
 EOF
 
 
