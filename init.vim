@@ -30,6 +30,9 @@ Plug 'lukas-reineke/indent-blankline.nvim',
 " Cheatsheet
 Plug 'sudormrfbin/cheatsheet.nvim'
 Plug 'nvim-lua/popup.nvim'
+"nvim-tree
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
 
 Plug 'nvim-telescope/telescope.nvim'
 
@@ -127,6 +130,11 @@ set shortmess+=c
 " }
 " EOF
 
+" ----------Configure Nvim-tree----
+nnoremap <C-n> :NvimTreeToggle<CR>
+lua <<EOF
+require'nvim-tree'.setup()
+EOF
 
 " ----------Configure LSP----------
 lua <<EOF
