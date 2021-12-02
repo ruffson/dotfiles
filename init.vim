@@ -1,4 +1,3 @@
-
 " Plugins START
 call plug#begin()
 Plug 'cespare/vim-toml'
@@ -9,8 +8,8 @@ Plug 'folke/tokyonight.nvim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
@@ -35,6 +34,8 @@ Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 
 Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'nvim-lualine/lualine.nvim'
 
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
@@ -79,16 +80,28 @@ set nofoldenable    " disable folding
 "" -----------------------------------------------
 " PLUGIN CONFIG
 " -----------------------------------------------
-"" air-line
-" let g:airline_theme = "tokyonight"
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-let g:airline_powerline_fonts = 1
 
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
 
+"Lualine
+lua << EOF
+require'lualine'.setup{
+options = {
+    theme = 'ayu_mirage',
+    },
+  sections = {
+    lualine_x = {'filetype'},
+  },
+  tabline = {
+    lualine_a = {
+      {
+        'buffers',
+        show_filename_only = false,
+      }
+    },
+  }
+}
+
+EOF
 
 " Workspaces
 let g:workspace_session_directory = $HOME . '/.local/share/nvim/sessions/'
