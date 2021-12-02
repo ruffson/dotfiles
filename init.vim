@@ -202,12 +202,12 @@ lua <<EOF
 
   local nvim_lsp = require'lspconfig'
 
-  -- Enable julials
+  -- Enable LSP server for JULIA
   nvim_lsp.julials.setup({
       capabilities=capabilities,
       })
 
-  -- Enable rust analyzer
+  -- Enable LSP server for RUST
   nvim_lsp.rust_analyzer.setup({
       capabilities=capabilities,
       settings = {
@@ -230,23 +230,12 @@ lua <<EOF
       }
     })
 
+  -- Enable LSP server for PYTHON
   nvim_lsp.pyright.setup{
     capabilities=capabilities,
   }
-
 EOF
 
-" ----------CONFIGURE TREESITTER----------
-" lua << EOF
-" require'nvim-treesitter.configs'.setup {
-"   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-"   highlight = {
-"     enable = true,                 -- false will disable the whole extension
-"     -- disable = { "c", "rust" },  -- list of language that will be disabled
-"     additional_vim_regex_highlighting = false,
-"   },
-" }
-" EOF
 
 " ----------Configure Nvim-tree----
 nnoremap <C-n> :NvimTreeToggle<CR>
