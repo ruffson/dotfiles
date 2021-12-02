@@ -86,7 +86,6 @@ set nofoldenable    " disable folding
 " PLUGIN CONFIG
 " -----------------------------------------------
 
-
 "Lualine
 lua << EOF
 require'lualine'.setup{
@@ -105,7 +104,6 @@ options = {
     },
   }
 }
-
 EOF
 
 " Workspaces
@@ -114,18 +112,6 @@ let g:workspace_autocreate = 1
 let g:workspace_session_disable_on_args = 1
 let g:workspace_persist_undo_history = 0
 let g:workspace_autosave = 0
-
-"NERDTREE
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
-
-
-" If another buffer tries to replace NERDTree, put in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-let g:NERDTreeGitStatusUseNerdFonts = 1
 
 " Syntax highlighting for embedded lua
 let g:vimsyn_embed= 'l'
@@ -137,7 +123,6 @@ set completeopt=menu,menuone,noselect
 
 " CMP COMPLETION SETUP (formerly compe)
 lua <<EOF
-  -- Setup nvim-cmp.
 
   local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -214,7 +199,6 @@ lua <<EOF
 
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 
   local nvim_lsp = require'lspconfig'
 
@@ -270,14 +254,9 @@ lua <<EOF
 require'nvim-tree'.setup()
 EOF
 
-" ----------Configure LSP----------
+
+" ----------Configure LSP-diagnostics ----------
 lua <<EOF
--- nvim_lsp object
---local nvim_lsp = require'lspconfig'
-
---local capabilities = vim.lsp.protocol.make_client_capabilities()
---capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 -- Enable diagnostics
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -286,7 +265,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = true,
   }
 )
-
 EOF
 
 
