@@ -8,11 +8,10 @@ Plug 'tpope/vim-commentary'
 Plug 'folke/tokyonight.nvim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'machakann/vim-highlightedyank'
@@ -21,23 +20,23 @@ Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-unimpaired'
 Plug 'qpkorr/vim-bufkill'
 Plug 'thaerkh/vim-workspace'
-" Plug 'mbbill/undotree'
-" Plug 'mg979/vim-visual-multi'
 Plug 'JuliaEditorSupport/julia-vim'
 " --> Neovim 5 only:
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
-" Plug 'Yggdroot/indentLine'
 Plug 'lukas-reineke/indent-blankline.nvim',
-" Plug 'nvim-lua/completion-nvim'
-Plug 'hrsh7th/nvim-compe'
+" Cheatsheet
+Plug 'sudormrfbin/cheatsheet.nvim'
+Plug 'nvim-lua/popup.nvim'
+
+Plug 'nvim-telescope/telescope.nvim'
+
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mhartington/formatter.nvim'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'kristijanhusak/orgmode.nvim'
 " --> Neovim 5
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -67,7 +66,9 @@ set clipboard+=unnamedplus
 set diffopt+=vertical
 
 set foldmethod=syntax
-" set nofoldenable    " disable folding
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable    " disable folding
 
 " Settings END
 "------------------------------------------------
@@ -113,7 +114,21 @@ set completeopt=menu,menuone,noselect
 " Avoid showing extra messages when using completion
 set shortmess+=c
 
-" Configure LSP
+
+" ----------CONFIGURE TREESITTER----------
+" lua << EOF
+" require'nvim-treesitter.configs'.setup {
+"   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+"   highlight = {
+"     enable = true,                 -- false will disable the whole extension
+"     -- disable = { "c", "rust" },  -- list of language that will be disabled
+"     additional_vim_regex_highlighting = false,
+"   },
+" }
+" EOF
+
+
+" ----------Configure LSP----------
 lua <<EOF
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
@@ -164,87 +179,13 @@ nvim_lsp.rust_analyzer.setup({
 require'lspconfig'.pyright.setup{
 capabilities=capabilities,
 }
-
-EOF
-
-" Code navigation shortcuts
-" as found in :help lsp
-" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-" nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
-" Goto previous/next diagnostic warning/error
-" nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-" nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-" rust-analyzer does not yet support goto declaration
-" re-mapped `gd` to definition
-"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-" use <tab> and <s-tab> to navigate through popup menu
-
-
-" Completion
-lua <<EOF
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
-
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    vsnip = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    spell = true;
-    tags = true;
-    snippets_nvim = true;
-    treesitter = true;
-
-  };
-}
 EOF
 
 
-" ORGMODE
-lua << EOF
-require('orgmode').setup({
-  org_agenda_files = {'~/Documents/Notes/org/*'},
-  org_default_notes_file = '~/Documents/Notes/org/input.org',
-})
-EOF
-
-" GitSigns setup
+" ----------GITSIGNS SETUP----------
 lua << EOF
 require('gitsigns').setup()
 EOF
-
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" use <tab> as trigger keys
-"
-
-
-
 
 ""LSP config
 "Async Lsp Finder
@@ -281,16 +222,8 @@ nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_sag
 " Show diagnostic popup on cursor hover
 autocmd CursorHold * lua vim.lsp.diagnostic._define_default_signs_and_highlights()
 
-" goto previous/next diagnostic warning/error
-" nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
-" nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
-" enable type inlay hints
-" " rust end
-"lsp config
 
-"" Configure Formatter 
-"
-"
+"" ----------CONFIGURE FORMATTER----------
 lua << EOF
 require('formatter').setup(
 {
@@ -318,9 +251,7 @@ augroup FormatAutogroup
 augroup END
 ]], true)
 EOF
-"
-"
-" End Formatter
+
 ""------------------------------------------------
 " -----------------------------------------------
 " END PLUGIN CONFIG
@@ -341,7 +272,6 @@ autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
 "------------------------------------------------
 " Theme START
-
 if (has("nvim"))
     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
@@ -357,8 +287,6 @@ let g:tokyonight_enable_italic = 1
 colorscheme tokyonight
 set background=dark
 set cursorline
-
-
 " Theme END
 "------------------------------------------------
 
@@ -403,14 +331,7 @@ nnoremap <silent> <leader>d :Lspsaga show_line_diagnostics<CR>
 let g:which_key_map.d = {'name': 'diagnostics'}
 
 
-"GIT-gutter
-" let g:which_key_map.h = {'name': 'hunks'}
-" let g:which_key_map.h.p = 'preview'
-" let g:which_key_map.h.u = 'undo'
-" let g:which_key_map.h.s = 'stage'
-" nmap ]h <Plug>(GitGutterNextHunk)
-" nmap [h <Plug>(GitGutterPrevHunk)
-" GIT SIGNS
+" GITSIGNS
 let g:which_key_map.h = {'name': 'hunks'}
 let g:which_key_map.h.p = 'preview'
 let g:which_key_map.h.b = 'blame'
@@ -418,8 +339,6 @@ let g:which_key_map.h.u = 'undo'
 let g:which_key_map.h.r = 'reset hunk'
 let g:which_key_map.h.s = 'stage'
 let g:which_key_map.h.R = 'reset buffer'
-" nmap ]h <Plug>(GitGutterNextHunk)
-" nmap [h <Plug>(GitGutterPrevHunk)
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
@@ -430,11 +349,7 @@ let g:which_key_map.l = 'list-buffers'
 nnoremap <leader>w :ToggleWorkspace<CR>
 let g:which_key_map.w = 'workspace-toggle'
 
-"NERDTREE
-nnoremap <C-t> :NERDTreeToggle<CR>
-
-
 let g:which_key_map.o = {'name': 'format'}
 
-nnoremap <leader>u :UndotreeToggle<CR>
-let g:which_key_map.u = 'Undo tree'
+"CHEATSHEET
+nnoremap <leader>? :Cheatsheet<CR>
