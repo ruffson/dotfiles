@@ -239,6 +239,7 @@ EOF
 
 " ----------Configure Nvim-tree----
 nnoremap <C-n> :NvimTreeToggle<CR>
+let g:nvim_tree_disable_window_picker = 1
 lua <<EOF
 require'nvim-tree'.setup()
 EOF
