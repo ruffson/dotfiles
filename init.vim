@@ -5,6 +5,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'folke/tokyonight.nvim'
+Plug 'rebelot/kanagawa.nvim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
 
@@ -44,8 +45,12 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+" Rust config for convenience
+Plug 'simrat39/rust-tools.nvim'
+
+Plug 'nvim-lua/popup.nvim'
 Plug 'mhartington/formatter.nvim'
-Plug 'glepnir/lspsaga.nvim'
+Plug 'tami5/lspsaga.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 " should always go last
 Plug 'ryanoasis/vim-devicons'
@@ -117,10 +122,52 @@ let g:workspace_autosave = 0
 let g:vimsyn_embed= 'l'
 
 " LSP config
-set completeopt=menu,menuone,noselect
-" Avoid showing extra messages when using completion
-" set shortmess+=c
+" set completeopt=menu,noinsert,menuone,noselect
+set completeopt=menuone,noinsert,noselect
 
+
+" Avoid showing extra messages when using completion
+set shortmess+=c
+
+" ---- Configure LSP through rust-tools.nvim plugin.
+"
+" rust-tools will configure and enable certain LSP features for us.
+" See https://github.com/simrat39/rust-tools.nvim#configuration
+lua <<EOF
+local nvim_lsp = require'lspconfig'
+
+local opts = {
+    tools = { -- rust-tools options
+        autoSetHints = true,
+        hover_with_actions = true,
+        inlay_hints = {
+            show_parameter_hints = false,
+            parameter_hints_prefix = "",
+            other_hints_prefix = "",
+        },
+    },
+
+    -- all the opts to send to nvim-lspconfig
+    -- these override the defaults set by rust-tools.nvim
+    -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+    server = {
+        -- on_attach is a callback called when the language server attachs to the buffer
+        -- on_attach = on_attach,
+        settings = {
+            -- to enable rust-analyzer settings visit:
+            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+            ["rust-analyzer"] = {
+                -- enable clippy on save
+                checkOnSave = {
+                    command = "clippy"
+                },
+            }
+        }
+    },
+}
+
+require('rust-tools').setup(opts)
+EOF
 " CMP COMPLETION SETUP (formerly compe)
 lua <<EOF
 
@@ -207,29 +254,6 @@ lua <<EOF
       capabilities=capabilities,
       })
 
-  -- Enable LSP server for RUST
-  nvim_lsp.rust_analyzer.setup({
-      capabilities=capabilities,
-      settings = {
-          ["rust-analyzer"] = {
-              assist = {
-                  importMergeBehavior = "last",
-                  importPrefix = "by_self",
-              },
-              cargo = {
-                  loadOutDirsFromCheck = true
-              },
-              procMacro = {
-                  enable = true
-              },
-              diagnostics = {
-                  enable = true,
-                  disabled = {"unresolved-proc-macro"},
-              },
-          }
-      }
-    })
-
   -- Enable LSP server for PYTHON
   nvim_lsp.pyright.setup{
     capabilities=capabilities,
@@ -263,70 +287,30 @@ lua << EOF
 require('gitsigns').setup()
 EOF
 
-""LSP config
-"Async Lsp Finder
+""LSPSAGA config
 nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
 nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-"Code Action
 nnoremap <silent>ga :Lspsaga code_action<CR>
 vnoremap <silent>ga :<C-U>Lspsaga range_code_action<CR>
-" Hover Docs
 nnoremap <silent>K :Lspsaga hover_doc<CR>
-" -- scroll down hover doc or scroll in definition preview
 nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-" -- scroll up hover doc
 nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-" SignatureHelp
 nnoremap <silent> gs :Lspsaga signature_help<CR>
-" Rename
 nnoremap <silent>gr :Lspsaga rename<CR>
-" Preview Definition
 nnoremap <silent> gd :Lspsaga preview_definition<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> ]g :Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> [g :Lspsaga diagnostic_jump_prev<CR>
 
-"-- scroll down hover doc or scroll in definition preview
+" -- scroll down hover doc or scroll in definition preview
+ nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+" -- scroll up hover doc
+ nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-"-- scroll up hover doc
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-
-" Set updatetime for CursorHold
-" 300ms of no cursor movement to trigger CursorHold
-" set updatetime=300
-" Show diagnostic popup on cursor hover
-autocmd CursorHold * lua vim.lsp.diagnostic._define_default_signs_and_highlights()
-
+" Format-on-write for Rust
+autocmd BufWritePre *.rs,*.jl,*.lua lua vim.lsp.buf.formatting_sync(nil, 200)
 
 "" ----------CONFIGURE FORMATTER----------
-lua << EOF
-require('formatter').setup(
-{
-  logging = false,
-  filetype = {
-    rust = {
-      -- Rustfmt
-      function()
-        return {
-          exe = "rustfmt",
-          args = {"--emit=stdout"},
-          stdin = true
-        }
-      end
-      }, julia = {
-
-
-      }
-
-    }})
-vim.api.nvim_exec([[
-augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost *.js,*.rs,*.lua FormatWrite
-augroup END
-]], true)
-EOF
 
 ""------------------------------------------------
 " -----------------------------------------------
@@ -344,8 +328,6 @@ autocmd BufReadPost *
 " persist END
 "------------------------------------------------
 
-autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
-\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
 "------------------------------------------------
 " Theme START
 if (has("nvim"))
