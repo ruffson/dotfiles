@@ -281,6 +281,16 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 EOF
 
+" ------------------- Cheatsheet Setup
+"
+lua << EOF
+require("cheatsheet").setup({
+    bundled_cheatsheets = {
+        -- only show the default cheatsheet
+        disabled = { "nerd-fonts" },
+    },
+})
+EOF
 
 " ----------GITSIGNS SETUP----------
 lua << EOF
@@ -370,8 +380,11 @@ nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 let g:which_key_map.s = {'name': 'search'}
 nmap <leader>sz :FZF<CR>
 map <leader>sg :Rg<space>
-let g:which_key_map.s.z = 'FZF-file-search'
-let g:which_key_map.s.g = 'grep-search'
+" TELESCOPE CONFIG
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " File mappings
 let g:which_key_map.f = { 'name' : 'file' }
 nnoremap <silent> <leader>fs :update<CR>
