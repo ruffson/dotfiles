@@ -338,7 +338,7 @@ vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", {norema
 vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {noremap = true})
 -- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
-vim.api.nvim_set_keymap("n", "<leader> fh", "<cmd>Telescope lsp_document_symbols<cr>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope lsp_document_symbols<cr>", {noremap = true})
 
 -- Save
 vim.api.nvim_set_keymap("n", "<leader>s", "<cmd>update<cr>", {noremap = true})
@@ -361,27 +361,43 @@ vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>Cheatsheet<cr>", {noremap = true
 
 
 -- which-key
+-- Build-in plugins: press ` for Marks, " for registers and z, g
 local wk = require("which-key")
--- As an example, we will create the following mappings:
---  * <leader>ff find files
---  * <leader>fr show recent files
---  * <leader>fb Foobar
--- we'll document:
---  * <leader>fn new file
---  * <leader>fe edit file
--- and hide <leader>1
 
 wk.register({
   f = {
-    name = "files",
-    f = { "<cmd>Telescope find_files<cr>", "File" },
-    r = { "<cmd>Telescope oldfiles<cr>", "Recent"},
-    b = { "Buffer" },
-    h = "Help", -- same as above
-    -- ["1"] = "which_key_ignore",  -- special label to hide it in the popup
-    -- b = { function() print("bar") end, "Foobar" } -- you can also pass functions!
+    name = "Files",
+    f = "File",
+    g = 'Grep',
+    b = "Buffer",
+    r = "Recent",
+    s = "Symbols",
+    h = "Help",
+    },
+    s = "Save",
+  d = "Diagnostics",
+  g = {
+    name = 'Git hunks',
+    p = 'Preview hunk',
+    s = 'Stage hunk',
+    r = 'Reset hunk',
+    u = 'Undo stage hunk',
+    R = 'Reset BUFFER',
+    b = 'Blame line',
+    d = 'Diff this',
+    D = 'DIFF this??',
   },
-}, { prefix = "<leader>" })
+  t = {
+    name = "Git toggle",
+    d = 'toggle deleted',
+    b = 'toggle line blame',
+  },
+  g = "Git",
+  w = "Workspace toggle",
+  o = "Format",
+
+},
+{ prefix = "<leader>" })
 
 
 
