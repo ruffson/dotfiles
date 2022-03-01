@@ -1,2 +1,4 @@
 %colors Linux
-pretty_print_default(True)
+
+# only makes sense when solely working in notebooks
+# pretty_print_default(True)
