@@ -31,6 +31,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 
+Plug 'dhruvasagar/vim-zoom'
+
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 
@@ -98,6 +100,12 @@ options = {
     theme = 'ayu_mirage',
     },
   sections = {
+    lualine_a = {
+      {
+        'filename',
+        path = 1,
+    }
+    },
     lualine_x = {'filetype'},
   },
   tabline = {
@@ -294,8 +302,39 @@ EOF
 
 " ----------GITSIGNS SETUP----------
 lua << EOF
-require('gitsigns').setup()
+require('gitsigns').setup {
+  on_attach = function(bufnr)
+    local function map(mode, lhs, rhs, opts)
+        opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
+        vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    end
+
+    -- Navigation
+    map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+    map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+
+    -- Actions
+    map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map('v', '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map('n', '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('v', '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hu', '<cmd>Gitsigns undo_stage_hunk<CR>')
+    map('n', '<leader>hR', '<cmd>Gitsigns reset_buffer<CR>')
+    map('n', '<leader>hp', '<cmd>Gitsigns preview_hunk<CR>')
+    map('n', '<leader>hb', '<cmd>lua require"gitsigns".blame_line{full=true}<CR>')
+    map('n', '<leader>tb', '<cmd>Gitsigns toggle_current_line_blame<CR>')
+    map('n', '<leader>hd', '<cmd>Gitsigns diffthis<CR>')
+    map('n', '<leader>hD', '<cmd>lua require"gitsigns".diffthis("~")<CR>')
+    map('n', '<leader>td', '<cmd>Gitsigns toggle_deleted<CR>')
+
+    -- Text object
+    map('o', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+    map('x', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
+}
 EOF
+
+set synmaxcol=512
 
 ""LSPSAGA config
 nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
@@ -376,19 +415,25 @@ call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 " Define prefix dictionary
 
-" Search mappings
-let g:which_key_map.s = {'name': 'search'}
-nmap <leader>sz :FZF<CR>
-map <leader>sg :Rg<space>
 " TELESCOPE CONFIG
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+" When searching symbols, use <C-l> to filter for types (e.g. methods), select
+" via <C-n> and <C-p>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>
+
 " File mappings
-let g:which_key_map.f = { 'name' : 'file' }
-nnoremap <silent> <leader>fs :update<CR>
-let g:which_key_map.f.s = 'save-file'
+let g:which_key_map.f = { 'name' : 'find' }
+let g:which_key_map.f.f = 'file'
+let g:which_key_map.f.g = 'grep'
+let g:which_key_map.f.b = 'buffers'
+let g:which_key_map.f.h = 'help'
+let g:which_key_map.f.s = 'symbols'
+
+nnoremap <silent> <leader>s :update<CR>
+let g:which_key_map.s = { 'name' : 'save file' }
 
 map <silent> <leader><ESC> :noh<CR>
 let g:which_key_map['<Esc>'] = 'clear-search'
@@ -403,19 +448,22 @@ let g:which_key_map.d = {'name': 'diagnostics'}
 
 
 " GITSIGNS
-let g:which_key_map.h = {'name': 'hunks'}
-let g:which_key_map.h.p = 'preview'
-let g:which_key_map.h.b = 'blame'
-let g:which_key_map.h.u = 'undo'
+let g:which_key_map.h = {'name': 'GIT hunks'}
+let g:which_key_map.t = {'name': 'GIT toggle'}
+let g:which_key_map.h.p = 'preview hunk'
+let g:which_key_map.h.s = 'stage hunk'
 let g:which_key_map.h.r = 'reset hunk'
-let g:which_key_map.h.s = 'stage'
-let g:which_key_map.h.R = 'reset buffer'
+let g:which_key_map.h.u = 'undo stage hunk'
+let g:which_key_map.h.R = 'reset BUFFER'
+let g:which_key_map.h.b = 'blame line'
+let g:which_key_map.t.b = 'toggle line blame'
+let g:which_key_map.h.d = 'diff this'
+let g:which_key_map.h.D = 'DIFF this??'
+let g:which_key_map.t.d = 'toggle deleted'
+
 
 nnoremap <leader>g :Git<CR>
 let g:which_key_map.g = {'name': 'git'}
-
-nnoremap <Leader>l :ls<CR>:b<Space>
-let g:which_key_map.l = 'list-buffers'
 
 nnoremap <leader>w :ToggleWorkspace<CR>
 let g:which_key_map.w = 'workspace-toggle'
