@@ -7,7 +7,7 @@
 -- Use packer.nvim
 -- Install via:
 --  git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
--- Load plugins from plugins.lua:
+-- Load plugins from lua/plugins.lua:
 require('plugins')
 -- --------------------
 -- --------------------
