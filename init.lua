@@ -269,7 +269,7 @@ vim.api.nvim_set_keymap(
     ":NvimTreeToggle<cr>",
     { noremap = true }
 )
-vim.g.nvim_tree_disable_window_picker = "1"
+-- vim.g.nvim_tree_disable_window_picker = "1"
 require'nvim-tree'.setup()
 
 
