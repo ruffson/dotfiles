@@ -17,7 +17,9 @@ return require('packer').startup(function()
     -- }
     -- use 'junegunn/fzf.vim'
     use 'tpope/vim-commentary'
+    -- Themes
     use 'folke/tokyonight.nvim'
+
     use 'rebelot/kanagawa.nvim'
     use 'jiangmiao/auto-pairs'
     use 'chrisbra/csv.vim'
@@ -35,6 +37,7 @@ return require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'lewis6991/gitsigns.nvim'
     use 'lukas-reineke/indent-blankline.nvim'
+    use 'p00f/clangd_extensions.nvim'
     -- Cheatsheet
     use 'sudormrfbin/cheatsheet.nvim'
     -- nvim-tree
@@ -56,7 +59,7 @@ return require('packer').startup(function()
     use 'simrat39/rust-tools.nvim'
     use 'nvim-lua/popup.nvim'
     use 'mhartington/formatter.nvim'
-    use {'tami5/lspsaga.nvim', branch = 'nvim6.0'}
+    use 'tami5/lspsaga.nvim'
     use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'

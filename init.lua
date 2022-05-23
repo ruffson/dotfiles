@@ -39,7 +39,7 @@ set foldmethod=syntax
 set synmaxcol=1024
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
-" set nofoldenable
+set nofoldenable
 set completeopt=menuone,noinsert,noselect
 " Avoid showing extra messages when using completion
 set shortmess+=c
@@ -71,6 +71,7 @@ autocmd BufWinEnter *
             \ | set nowrap
             \ | endif
 
+autocmd Filetype lua setlocal shiftwidth=2
 ]])
 
 
@@ -134,9 +135,9 @@ local on_attach = function(client, bufnr)
     map("n", "go", "<cmd>Lspsaga show_line_diagnostics<cr>")
     map("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<cr>")
     map("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<cr>")
-    map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
-    map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
-    map("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics")
+    -- map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
+    -- map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
+    map("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>")
 end
 
 -- --------------------
@@ -235,6 +236,29 @@ nvim_lsp.pyright.setup{
   capabilities=capabilities,
 }
 
+-- Enable LSP server for C++/C/Objective-C
+-- require("clangd_extensions").setup()
+-- nvim_lsp.clangd.setup {
+--   }
+require("clangd_extensions").setup {
+  server = {
+    on_attach=on_attach,
+    capabilities=capabilities,
+  },
+  extensions = {
+    autoSetHints = true,
+    hover_with_actions = true,
+    inlay_hints = {
+        only_current_line = false,
+        only_current_line_autocmd = "CursorHold",
+        show_parameter_hints = true,
+        -- The color of the hints
+        highlight = "Comment",
+    },
+  },
+  -- Keybindings to switch between header and source files of C/C++ files
+  vim.api.nvim_set_keymap("n", "<leader>cs", "<cmd>ClangdSwitchSourceHeader<cr>", {noremap = true})
+}
 -- Enable Rust using Rust tools
 local opts = {
     on_attach=on_attach,
@@ -270,9 +294,20 @@ vim.api.nvim_set_keymap(
     { noremap = true }
 )
 -- vim.g.nvim_tree_disable_window_picker = "1"
-require'nvim-tree'.setup()
-
-
+require'nvim-tree'.setup({
+  update_focused_file = {
+    enable = true,
+    update_cwd = false,
+    ignore_list = {},
+  },
+  actions = {
+    open_file = {
+      window_picker = {
+        enable = false,
+      },
+    },
+  },
+})
 -- --------------------
 -- Cheatsheet --
 -- --------------------
@@ -286,31 +321,44 @@ require("cheatsheet").setup({
 -- --------------------
 -- Git signs --
 -- --------------------
-require('gitsigns').setup {
+require('gitsigns').setup{
   on_attach = function(bufnr)
-    local function map(mode, lhs, rhs, opts)
-        opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
-        vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
     end
-    -- navigation
-    map('n', ']c', "&diff ? ']c' : '<cmd>gitsigns next_hunk<cr>'", {expr=true})
-    map('n', '[c', "&diff ? '[c' : '<cmd>gitsigns prev_hunk<cr>'", {expr=true})
-    -- actions
-    map('n', '<leader>hs', ':gitsigns stage_hunk<cr>')
-    map('v', '<leader>hs', ':gitsigns stage_hunk<cr>')
-    map('n', '<leader>hr', ':gitsigns reset_hunk<cr>')
-    map('v', '<leader>hr', ':gitsigns reset_hunk<cr>')
-    map('n', '<leader>hu', '<cmd>gitsigns undo_stage_hunk<cr>')
-    map('n', '<leader>hr', '<cmd>gitsigns reset_buffer<cr>')
-    map('n', '<leader>hp', '<cmd>gitsigns preview_hunk<cr>')
-    map('n', '<leader>hb', '<cmd>lua require"gitsigns".blame_line{full=true}<cr>')
-    map('n', '<leader>tb', '<cmd>gitsigns toggle_current_line_blame<cr>')
-    map('n', '<leader>hd', '<cmd>gitsigns diffthis<cr>')
-    map('n', '<leader>hd', '<cmd>lua require"gitsigns".diffthis("~")<cr>')
-    map('n', '<leader>td', '<cmd>gitsigns toggle_deleted<cr>')
-    -- text object
-    map('o', 'ih', ':<c-u>gitsigns select_hunk<cr>')
-    map('x', 'ih', ':<c-u>gitsigns select_hunk<cr>')
+
+    -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    -- Actions
+    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+
+    -- Text object
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
 }
 -- --------------------
@@ -395,6 +443,10 @@ wk.register({
   g = "Git",
   w = "Workspace toggle",
   o = "Format",
+  c = {
+    name = "C/C++",
+    s = 'Switch Source/Header file',
+  },
 
 },
 { prefix = "<leader>" })
