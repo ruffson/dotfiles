@@ -128,6 +128,7 @@ local on_attach = function(client, bufnr)
     end
     map("n", "gh", "<cmd>Lspsaga lsp_finder<cr>")
     map("n", "gs", "<cmd>Lspsaga signatur_help<cr>")
+    map("n", "gr", "<cmd>Lspsaga rename<cr>")
     map("n", "gd", "<cmd>Lspsaga preview_definition<cr>")
     map("n", "gD", "vim.lsp.buf.definition()<cr>")
     map("n", "ga", "<cmd>Lspsaga code_action<cr>")
