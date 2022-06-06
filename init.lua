@@ -119,6 +119,13 @@ vim.g.workspace_persist_undo_history = "0"
 vim.g.workspace_autosave = "0"
 
 -- --------------------
+-- Telescope --
+-- --------------------
+
+-- Add howdoi to Telescope, install howdoi via pip first
+require('telescope').load_extension('howdoi')
+
+-- --------------------
 -- Lsp saga --
 -- --------------------
 local on_attach = function(client, bufnr)
@@ -389,6 +396,8 @@ vim.api.nvim_set_keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {norem
 -- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
 vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope lsp_document_symbols<cr>", {noremap = true})
 
+vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>Telescope howdoi<cr>", {noremap = true})
+
 -- Save
 vim.api.nvim_set_keymap("n", "<leader>s", "<cmd>update<cr>", {noremap = true})
 
@@ -425,6 +434,7 @@ wk.register({
     },
     s = "Save",
   d = "Diagnostics",
+  h = "how do I",
   g = {
     name = 'Git hunks',
     p = 'Preview hunk',

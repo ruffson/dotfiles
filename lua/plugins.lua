@@ -60,6 +60,7 @@ return require('packer').startup(function()
     use 'nvim-lua/popup.nvim'
     use 'mhartington/formatter.nvim'
     use 'tami5/lspsaga.nvim'
+    use 'zane-/howdoi.nvim'
     use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
