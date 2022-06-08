@@ -119,6 +119,11 @@ vim.g.workspace_persist_undo_history = "0"
 vim.g.workspace_autosave = "0"
 
 -- --------------------
+-- Leap --
+-- --------------------
+require('leap').set_default_keymaps()
+
+-- --------------------
 -- Telescope --
 -- --------------------
 
