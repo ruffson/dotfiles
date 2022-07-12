@@ -50,6 +50,10 @@ return require('packer').startup(function()
     use 'dhruvasagar/vim-zoom'
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-lualine/lualine.nvim'
+    use {
+      'romgrk/barbar.nvim',
+      requires = 'kyazdani42/nvim-web-devicons'
+    }
     -- CMP completion (formerly compe)
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'

@@ -36,6 +36,8 @@ set scrolloff=5
 set clipboard+=unnamedplus
 set diffopt+=vertical
 set foldmethod=syntax
+" Disable this shortcut as it conflicts with barbar's picker
+let g:AutoPairsShortcutToggle = ''
 set synmaxcol=1024
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
@@ -93,18 +95,51 @@ options = {
       {
         'filename',
         path = 1,
+        shorting_target = 30,
     }
     },
+    lualine_c = {},
     lualine_x = {'filetype'},
   },
-  tabline = {
-    lualine_a = {
-      {
-        'buffers',
-        show_filename_only = false,
-      }
-    },
-  }
+}
+-- --------------------
+-- barbar.nvim --
+-- --------------------
+-- Set barbar's options
+require'bufferline'.setup {
+  tabpages = false,
+  closable = false,
+  auto_hide = true,
+
+  -- Configure icons on the bufferline.
+  icon_separator_active = '▎',
+  icon_separator_inactive = '▎',
+  icon_close_tab = '',
+  icon_close_tab_modified = '●',
+  icon_pinned = '車',
+
+  -- If true, new buffers will be inserted at the start/end of the list.
+  -- Default is to insert after current buffer.
+  insert_at_end = true,
+  insert_at_start = false,
+
+  -- Sets the maximum buffer name length.
+  maximum_length = 30,
+
+  -- If set, the letters for each buffer in buffer-pick mode will be
+  -- assigned based on their name. Otherwise or in case all letters are
+  -- already assigned, the behavior is to assign letters in order of
+  -- usability (see order below)
+  semantic_letters = true,
+
+  -- New buffer letters are assigned in this order. This order is
+  -- optimal for the qwerty keyboard layout but might need adjustement
+  -- for other layouts.
+  letters = 'asdfjkl;ghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP',
+
+  -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
+  -- where X is the buffer number. But only a static string is accepted here.
+  no_name_title = nil,
 }
 
 
@@ -429,6 +464,23 @@ vim.api.nvim_set_keymap("n", "<C-L>", "<C-W>l", {noremap = true})
 -- Aerial Outline
 vim.api.nvim_set_keymap("n", "<leader>ot", "<cmd>AerialToggle<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>of", "<cmd>AerialToggle float<cr>", {noremap = true})
+
+-- Keybindings for barbar
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+-- Move to previous/next
+-- map <S-k> <Nop>
+map('n', '[b', '<Nop>', opts)
+map('n', '[b', '<Cmd>BufferPrevious<CR>', opts)
+map('n', ']b', '<Nop>', opts)
+map('n', ']b', '<Cmd>BufferNext<CR>', opts)
+-- Pin/unpin buffer
+map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+--- Close buffer
+map('n', '<A-x>', '<Cmd>BufferClose<CR>', opts)
+-- Magic buffer-picking mode
+map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
+
 -- Misc
 vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>Git<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", {noremap = true})
