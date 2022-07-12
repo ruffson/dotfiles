@@ -151,6 +151,10 @@ local on_attach = function(client, bufnr)
     -- map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
     -- map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
     map("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>")
+
+    -- Add Aerial to on_attach:
+    require("aerial").on_attach(client, bufnr)
+
 end
 
 -- --------------------
@@ -321,6 +325,13 @@ require'nvim-tree'.setup({
     },
   },
 })
+
+
+-- --------------------
+-- AERIAL --
+-- --------------------
+require('aerial').setup({})
+
 -- --------------------
 -- Cheatsheet --
 -- --------------------
@@ -415,6 +426,9 @@ vim.api.nvim_set_keymap("n", "<C-K>", "<C-W>k", {noremap = true})
 vim.api.nvim_set_keymap("n", "<C-H>", "<C-W>h", {noremap = true})
 vim.api.nvim_set_keymap("n", "<C-L>", "<C-W>l", {noremap = true})
 
+-- Aerial Outline
+vim.api.nvim_set_keymap("n", "<leader>ot", "<cmd>AerialToggle<cr>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>of", "<cmd>AerialToggle float<cr>", {noremap = true})
 -- Misc
 vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>Git<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", {noremap = true})
@@ -457,7 +471,12 @@ wk.register({
     b = 'toggle line blame',
   },
   w = "Workspace toggle",
-  o = "Format",
+  -- o = "Format",
+  o = {
+    name = "Outline",
+    t = 'toggle',
+    f = 'floating',
+  },
   c = {
     name = "C/C++",
     s = 'Switch Source/Header file',

@@ -19,7 +19,11 @@ return require('packer').startup(function()
     use 'tpope/vim-commentary'
     -- Themes
     use 'folke/tokyonight.nvim'
-
+    -- Outline
+    use {
+      'stevearc/aerial.nvim',
+      config = function() require('aerial').setup() end
+    }
     use 'rebelot/kanagawa.nvim'
     use 'jiangmiao/auto-pairs'
     use 'chrisbra/csv.vim'
