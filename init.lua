@@ -142,8 +142,7 @@ require'bufferline'.setup {
   no_name_title = nil,
 }
 
-
--- --------------------
+--------------------
 -- Workspaces --
 -- --------------------
 HOME = os.getenv("HOME")
@@ -283,15 +282,11 @@ nvim_lsp.julials.setup({
   })
 
 -- Enable LSP server for PYTHON
-nvim_lsp.pyright.setup{
+nvim_lsp.pylsp.setup{
   on_attach=on_attach,
   capabilities=capabilities,
 }
 
--- Enable LSP server for C++/C/Objective-C
--- require("clangd_extensions").setup()
--- nvim_lsp.clangd.setup {
---   }
 require("clangd_extensions").setup {
   server = {
     on_attach=on_attach,
