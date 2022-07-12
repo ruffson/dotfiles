@@ -445,7 +445,7 @@ vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", {norema
 vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {noremap = true})
 -- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
-vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope lsp_document_symbols<cr>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", {noremap = true})
 
 vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>Telescope howdoi<cr>", {noremap = true})
 
@@ -482,11 +482,8 @@ map('n', '<A-x>', '<Cmd>BufferClose<CR>', opts)
 map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
 
 -- Misc
-vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>Git<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>Cheatsheet<cr>", {noremap = true})
-
-
 
 
 -- which-key
@@ -530,8 +527,8 @@ wk.register({
     f = 'floating',
   },
   c = {
-    name = "C/C++",
-    s = 'Switch Source/Header file',
+    name = "c/c++",
+    s = 'switch source/header file',
   },
 
 },
