@@ -23,6 +23,7 @@ set noswapfile
 set nowritebackup
 set number
 set signcolumn=yes
+" set cmdheight=0
 set title
 set wrap
 setlocal wrap
@@ -102,6 +103,9 @@ options = {
     lualine_x = {'filetype'},
   },
 }
+-- Enable global statusline
+vim.opt.laststatus = 3
+
 -- --------------------
 -- barbar.nvim --
 -- --------------------
