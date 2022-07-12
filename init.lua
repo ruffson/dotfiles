@@ -347,6 +347,9 @@ require'nvim-tree'.setup({
     update_cwd = false,
     ignore_list = {},
   },
+  view = {
+    adaptive_size = true,
+  },
   actions = {
     open_file = {
       window_picker = {
