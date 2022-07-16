@@ -78,10 +78,22 @@ autocmd BufWinEnter *
 ]])
 
 -- --------------------
+-- THEME --
+-- --------------------
+vim.g.tokyonight_style = "night"
+vim.tokyonight_enable_italic_functions = true
+vim.cmd([[colorscheme tokyonight]])
+
+-- --------------------
 -- --------------------
 -- PLUGIN SPECIFIC --
 -- --------------------
 -- --------------------
+
+-- Global shortcut to make keymap definitions easier
+local map = vim.api.nvim_set_keymap
+local opts_nore = { noremap = true }
+local opts_silent = { noremap = true, silent = true }
 
 -- --------------------
 -- Lualine --
@@ -120,30 +132,26 @@ require("bufferline").setup({
     icon_close_tab = "",
     icon_close_tab_modified = "●",
     icon_pinned = "車",
-
-    -- If true, new buffers will be inserted at the start/end of the list.
-    -- Default is to insert after current buffer.
     insert_at_end = true,
     insert_at_start = false,
-
-    -- Sets the maximum buffer name length.
     maximum_length = 30,
-
-    -- If set, the letters for each buffer in buffer-pick mode will be
-    -- assigned based on their name. Otherwise or in case all letters are
-    -- already assigned, the behavior is to assign letters in order of
-    -- usability (see order below)
     semantic_letters = true,
-
-    -- New buffer letters are assigned in this order. This order is
-    -- optimal for the qwerty keyboard layout but might need adjustement
-    -- for other layouts.
-    letters = "asdfjkl;ghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP",
-
     -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
     -- where X is the buffer number. But only a static string is accepted here.
     no_name_title = nil,
 })
+-- Move to previous/next
+-- map <S-k> <Nop>
+map("n", "[b", "<Nop>", opts_silent)
+map("n", "[b", "<Cmd>BufferPrevious<CR>", opts_silent)
+map("n", "]b", "<Nop>", opts_silent)
+map("n", "]b", "<Cmd>BufferNext<CR>", opts_silent)
+-- Pin/unpin buffer
+map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts_silent)
+--- Close buffer
+map("n", "<A-x>", "<Cmd>BufferClose<CR>", opts_silent)
+-- Magic buffer-picking mode
+map("n", "<C-p>", "<Cmd>BufferPick<CR>", opts_silent)
 
 --------------------
 -- Workspaces --
@@ -154,6 +162,7 @@ vim.g.workspace_autocreate = "1"
 vim.g.workspace_session_disable_on_args = "1"
 vim.g.workspace_persist_undo_history = "0"
 vim.g.workspace_autosave = "0"
+map("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", opts_nore)
 
 -- --------------------
 -- Leap --
@@ -174,6 +183,16 @@ require("telescope").setup({
 })
 -- Add howdoi to Telescope, install howdoi via pip first
 require("telescope").load_extension("howdoi")
+
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts_nore)
+map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts_nore)
+map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts_nore)
+map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts_nore)
+map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", opts_nore)
+-- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
+map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", opts_nore)
+
+map("n", "<leader>h", "<cmd>Telescope howdoi<cr>", opts_nore)
 
 -- --------------------
 -- Lsp saga --
@@ -202,7 +221,7 @@ local on_attach = function(client, bufnr)
 end
 
 -- --------------------
--- LSP Setup --
+-- LSP/CMP Setup --
 -- --------------------
 
 -- CMP Completion Setup
@@ -292,22 +311,24 @@ cmp.setup.cmdline(":", {
 
 -- Setup lspconfig.
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
 local nvim_lsp = require("lspconfig")
 
 -- Add on_attach to EACH server's setup fn
+
+-- -------------------------
 -- Enable LSP server for JULIA
 nvim_lsp.julials.setup({
     on_attach = on_attach,
     capabilities = capabilities,
 })
-
+-- -------------------------
 -- Enable LSP server for PYTHON
 nvim_lsp.pylsp.setup({
     on_attach = on_attach,
     capabilities = capabilities,
 })
-
+-- -------------------------
+-- Enable LSP server for C/C++
 require("clangd_extensions").setup({
     server = {
         on_attach = on_attach,
@@ -326,6 +347,7 @@ require("clangd_extensions").setup({
     -- Keybindings to switch between header and source files of C/C++ files
     vim.api.nvim_set_keymap("n", "<leader>cs", "<cmd>ClangdSwitchSourceHeader<cr>", { noremap = true }),
 })
+-- -------------------------
 -- Enable Rust using Rust tools
 local opts = {
     on_attach = on_attach,
@@ -377,23 +399,19 @@ require("nvim-tree").setup({
 -- AERIAL --
 -- --------------------
 require("aerial").setup({})
+map("n", "<leader>ot", "<cmd>AerialToggle<cr>", opts_nore)
+map("n", "<leader>of", "<cmd>AerialToggle float<cr>", opts_nore)
 
 -- --------------------
 -- FORMATTER --
 -- --------------------
--- Utilities for creating configurations
 local util = require("formatter.util")
 
 -- Provides the Format and FormatWrite commands
 require("formatter").setup({
-    -- Enable or disable logging
     logging = true,
-    -- Set the log level
     log_level = vim.log.levels.WARN,
-    -- All formatter configurations are opt-in
     filetype = {
-        -- Formatter configurations for filetype "lua" go here
-        -- and will be executed in order
         lua = {
             require("formatter.filetypes.lua").stylua,
         },
@@ -413,6 +431,8 @@ require("cheatsheet").setup({
         disabled = { "nerd-fonts" },
     },
 })
+-- Build-in plugins: press ` for Marks, " for registers and z, g
+map("n", "<leader>?", "<cmd>Cheatsheet<cr>", opts_nore)
 
 -- --------------------
 -- Git signs --
@@ -475,44 +495,18 @@ require("gitsigns").setup({
 -- --------------------
 require("neogen").setup({})
 
-local map = vim.api.nvim_set_keymap
-local opts_nore = { noremap = true }
-local opts_silent = { noremap = true, silent = true }
+-- --------------------
+-- Misc Keybindings
+-- --------------------
 
--- --------------------
--- THEME --
--- --------------------
-vim.g.tokyonight_style = "night"
-vim.tokyonight_enable_italic_functions = true
-vim.cmd([[colorscheme tokyonight]])
--- --------------------
--- Moving around, tabs, windows and buffers --
--- --------------------
+-- Moving around, tabs, windows and buffers
 map("n", "<SPACE>", "<Nop>", opts_nore)
 vim.g.mapleader = " "
 map("n", "<Up>", ":5winc -<cr>", opts_nore)
 map("n", "<Down>", ":5winc +<cr>", opts_nore)
 map("n", "<Left>", ":5winc <<cr>", opts_nore)
 map("n", "<Right>", ":5winc ><cr>", opts_nore)
--- Let mapleader = <SPACE>
 -- vim.g.maplocalleader = ","
-
--- Telescope config
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts_nore)
-map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts_nore)
-map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts_nore)
-map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts_nore)
-map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", opts_nore)
--- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
-map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", opts_nore)
-
-map("n", "<leader>h", "<cmd>Telescope howdoi<cr>", opts_nore)
-
--- Save
-map("n", "<leader>s", "<cmd>update<cr>", opts_nore)
-
--- Clear search
-map("n", "<leader><ESC>", "<cmd>noh<cr>", opts_nore)
 
 -- Move around windows with ctrl- hjkl
 map("n", "<C-J>", "<C-W>j", opts_nore)
@@ -520,31 +514,12 @@ map("n", "<C-K>", "<C-W>k", opts_nore)
 map("n", "<C-H>", "<C-W>h", opts_nore)
 map("n", "<C-L>", "<C-W>l", opts_nore)
 
--- Aerial Outline
-map("n", "<leader>ot", "<cmd>AerialToggle<cr>", opts_nore)
-map("n", "<leader>of", "<cmd>AerialToggle float<cr>", opts_nore)
+-- Save file
+map("n", "<leader>s", "<cmd>update<cr>", opts_nore)
 
--- Keybindings for barbar
+-- Clear search
+map("n", "<leader><ESC>", "<cmd>noh<cr>", opts_nore)
 
--- Move to previous/next
--- map <S-k> <Nop>
-map("n", "[b", "<Nop>", opts_silent)
-map("n", "[b", "<Cmd>BufferPrevious<CR>", opts_silent)
-map("n", "]b", "<Nop>", opts_silent)
-map("n", "]b", "<Cmd>BufferNext<CR>", opts_silent)
--- Pin/unpin buffer
-map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts_silent)
---- Close buffer
-map("n", "<A-x>", "<Cmd>BufferClose<CR>", opts_silent)
--- Magic buffer-picking mode
-map("n", "<C-p>", "<Cmd>BufferPick<CR>", opts_silent)
-
--- Misc
-map("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", opts_nore)
-map("n", "<leader>?", "<cmd>Cheatsheet<cr>", opts_nore)
-
--- which-key
--- Build-in plugins: press ` for Marks, " for registers and z, g
 local wk = require("which-key")
 
 wk.register({
