@@ -12,11 +12,6 @@ end
 return require("packer").startup(function()
     use({ "wbthomason/packer.nvim" })
     use("cespare/vim-toml")
-    -- use {
-    --     'junegunn/fzf',
-    --     run ="-> fzf#install()"
-    -- }
-    -- use 'junegunn/fzf.vim'
     use("tpope/vim-commentary")
     -- Themes
     use("folke/tokyonight.nvim")
