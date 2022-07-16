@@ -168,9 +168,9 @@ require("telescope").setup({
         file_ignore_patterns = {
             "build",
             "install",
-            "log"
-        }
-    }
+            "log",
+        },
+    },
 })
 -- Add howdoi to Telescope, install howdoi via pip first
 require("telescope").load_extension("howdoi")
@@ -470,12 +470,14 @@ require("gitsigns").setup({
     end,
 })
 
-
 -- --------------------
 -- Neogen (code annotations) --
 -- --------------------
-require('neogen').setup{}
+require("neogen").setup({})
 
+local map = vim.api.nvim_set_keymap
+local opts_nore = { noremap = true }
+local opts_silent = { noremap = true, silent = true }
 
 -- --------------------
 -- THEME --
@@ -486,61 +488,60 @@ vim.cmd([[colorscheme tokyonight]])
 -- --------------------
 -- Moving around, tabs, windows and buffers --
 -- --------------------
-vim.api.nvim_set_keymap("n", "<SPACE>", "<Nop>", { noremap = true })
+map("n", "<SPACE>", "<Nop>", opts_nore)
 vim.g.mapleader = " "
-vim.api.nvim_set_keymap("n", "<Up>", ":5winc -<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<Down>", ":5winc +<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<Left>", ":5winc <<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<Right>", ":5winc ><cr>", { noremap = true })
+map("n", "<Up>", ":5winc -<cr>", opts_nore)
+map("n", "<Down>", ":5winc +<cr>", opts_nore)
+map("n", "<Left>", ":5winc <<cr>", opts_nore)
+map("n", "<Right>", ":5winc ><cr>", opts_nore)
 -- Let mapleader = <SPACE>
-vim.g.maplocalleader = ","
+-- vim.g.maplocalleader = ","
 
 -- Telescope config
-vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { noremap = true })
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts_nore)
+map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts_nore)
+map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts_nore)
+map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts_nore)
+map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", opts_nore)
 -- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
-vim.api.nvim_set_keymap("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", { noremap = true })
+map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", opts_nore)
 
-vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>Telescope howdoi<cr>", { noremap = true })
+map("n", "<leader>h", "<cmd>Telescope howdoi<cr>", opts_nore)
 
 -- Save
-vim.api.nvim_set_keymap("n", "<leader>s", "<cmd>update<cr>", { noremap = true })
+map("n", "<leader>s", "<cmd>update<cr>", opts_nore)
 
 -- Clear search
-vim.api.nvim_set_keymap("n", "<leader><ESC>", "<cmd>noh<cr>", { noremap = true })
+map("n", "<leader><ESC>", "<cmd>noh<cr>", opts_nore)
 
 -- Move around windows with ctrl- hjkl
-vim.api.nvim_set_keymap("n", "<C-J>", "<C-W>j", { noremap = true })
-vim.api.nvim_set_keymap("n", "<C-K>", "<C-W>k", { noremap = true })
-vim.api.nvim_set_keymap("n", "<C-H>", "<C-W>h", { noremap = true })
-vim.api.nvim_set_keymap("n", "<C-L>", "<C-W>l", { noremap = true })
+map("n", "<C-J>", "<C-W>j", opts_nore)
+map("n", "<C-K>", "<C-W>k", opts_nore)
+map("n", "<C-H>", "<C-W>h", opts_nore)
+map("n", "<C-L>", "<C-W>l", opts_nore)
 
 -- Aerial Outline
-vim.api.nvim_set_keymap("n", "<leader>ot", "<cmd>AerialToggle<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>of", "<cmd>AerialToggle float<cr>", { noremap = true })
+map("n", "<leader>ot", "<cmd>AerialToggle<cr>", opts_nore)
+map("n", "<leader>of", "<cmd>AerialToggle float<cr>", opts_nore)
 
 -- Keybindings for barbar
-local map = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
+
 -- Move to previous/next
 -- map <S-k> <Nop>
-map("n", "[b", "<Nop>", opts)
-map("n", "[b", "<Cmd>BufferPrevious<CR>", opts)
-map("n", "]b", "<Nop>", opts)
-map("n", "]b", "<Cmd>BufferNext<CR>", opts)
+map("n", "[b", "<Nop>", opts_silent)
+map("n", "[b", "<Cmd>BufferPrevious<CR>", opts_silent)
+map("n", "]b", "<Nop>", opts_silent)
+map("n", "]b", "<Cmd>BufferNext<CR>", opts_silent)
 -- Pin/unpin buffer
-map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts)
+map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts_silent)
 --- Close buffer
-map("n", "<A-x>", "<Cmd>BufferClose<CR>", opts)
+map("n", "<A-x>", "<Cmd>BufferClose<CR>", opts_silent)
 -- Magic buffer-picking mode
-map("n", "<C-p>", "<Cmd>BufferPick<CR>", opts)
+map("n", "<C-p>", "<Cmd>BufferPick<CR>", opts_silent)
 
 -- Misc
-vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>Cheatsheet<cr>", { noremap = true })
+map("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", opts_nore)
+map("n", "<leader>?", "<cmd>Cheatsheet<cr>", opts_nore)
 
 -- which-key
 -- Build-in plugins: press ` for Marks, " for registers and z, g
