@@ -94,6 +94,9 @@ vim.cmd([[colorscheme tokyonight]])
 local map = vim.api.nvim_set_keymap
 local opts_nore = { noremap = true }
 local opts_silent = { noremap = true, silent = true }
+-- Set <space> as mapleader
+map("n", "<SPACE>", "<Nop>", opts_nore)
+vim.g.mapleader = " "
 
 -- --------------------
 -- Lualine --
@@ -494,14 +497,16 @@ require("gitsigns").setup({
 -- Neogen (code annotations) --
 -- --------------------
 require("neogen").setup({})
+vim.api.nvim_set_keymap("n", "<leader>af", ":lua require('neogen').generate({ type = 'func' })<CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>ac", ":lua require('neogen').generate({ type = 'class' })<CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>ai", ":lua require('neogen').generate({ type = 'file' })<CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>at", ":lua require('neogen').generate({ type = 'type' })<CR>", opts_silent)
 
 -- --------------------
 -- Misc Keybindings
 -- --------------------
 
 -- Moving around, tabs, windows and buffers
-map("n", "<SPACE>", "<Nop>", opts_nore)
-vim.g.mapleader = " "
 map("n", "<Up>", ":5winc -<cr>", opts_nore)
 map("n", "<Down>", ":5winc +<cr>", opts_nore)
 map("n", "<Left>", ":5winc <<cr>", opts_nore)
@@ -552,7 +557,13 @@ wk.register({
         b = "toggle line blame",
     },
     w = "Workspace toggle",
-    -- o = "Format",
+    a = {
+        name = "Annotate",
+        f = "Function",
+        c = "Class",
+        i = "File",
+        t = "Type",
+    },
     o = {
         name = "Outline",
         t = "toggle",
