@@ -74,7 +74,7 @@ autocmd BufWinEnter *
             \ | set nowrap
             \ | endif
 
-autocmd Filetype lua setlocal shiftwidth=2
+"autocmd Filetype lua setlocal shiftwidth=2
 ]])
 
 
@@ -368,6 +368,34 @@ require'nvim-tree'.setup({
 -- AERIAL --
 -- --------------------
 require('aerial').setup({})
+
+
+-- --------------------
+-- FORMATTER --
+-- --------------------
+-- Utilities for creating configurations
+local util = require "formatter.util"
+
+-- Provides the Format and FormatWrite commands
+require("formatter").setup {
+  -- Enable or disable logging
+  logging = true,
+  -- Set the log level
+  log_level = vim.log.levels.WARN,
+  -- All formatter configurations are opt-in
+  filetype = {
+    -- Formatter configurations for filetype "lua" go here
+    -- and will be executed in order
+    lua = {
+      require("formatter.filetypes.lua").stylua,
+    },
+
+    ["*"] = {
+      require("formatter.filetypes.any").remove_trailing_whitespace
+    }
+  }
+}
+
 
 -- --------------------
 -- Cheatsheet --
