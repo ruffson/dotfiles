@@ -215,6 +215,18 @@ snippet = {
     require('luasnip').lsp_expand(args.body)
   end,
 },
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.recently_used,
+      require("clangd_extensions.cmp_scores"),
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
 mapping = {
   ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
   ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
@@ -301,7 +313,6 @@ require("clangd_extensions").setup {
     hover_with_actions = true,
     inlay_hints = {
         only_current_line = false,
-        only_current_line_autocmd = "CursorHold",
         show_parameter_hints = true,
         -- The color of the hints
         highlight = "Comment",
