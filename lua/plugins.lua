@@ -69,6 +69,12 @@ return require("packer").startup(function()
     use("ggandor/leap.nvim")
     use("zane-/howdoi.nvim")
     use("khaveesh/vim-fish-syntax")
+    use {
+        "danymat/neogen",
+        requires = "nvim-treesitter/nvim-treesitter",
+        -- Uncomment next line if you want to follow only stable versions
+        -- tag = "*"
+    }
     use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
