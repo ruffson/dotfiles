@@ -163,7 +163,15 @@ require("leap").set_default_keymaps()
 -- --------------------
 -- Telescope --
 -- --------------------
-
+require("telescope").setup({
+    defaults = {
+        file_ignore_patterns = {
+            "build",
+            "install",
+            "log"
+        }
+    }
+})
 -- Add howdoi to Telescope, install howdoi via pip first
 require("telescope").load_extension("howdoi")
 
