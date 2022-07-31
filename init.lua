@@ -96,6 +96,7 @@ local opts_nore = { noremap = true }
 local opts_silent = { noremap = true, silent = true }
 -- Set <space> as mapleader
 map("n", "<SPACE>", "<Nop>", opts_nore)
+map("v", "U", "<Nop>", opts_nore)
 vim.g.mapleader = " "
 
 -- --------------------
