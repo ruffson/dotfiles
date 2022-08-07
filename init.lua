@@ -77,6 +77,8 @@ autocmd BufWinEnter *
 "autocmd Filetype lua setlocal shiftwidth=2
 ]])
 
+-- Disable mouse mode
+vim.opt.mouse = ""
 -- --------------------
 -- THEME --
 -- --------------------
@@ -96,6 +98,7 @@ local opts_nore = { noremap = true }
 local opts_silent = { noremap = true, silent = true }
 -- Set <space> as mapleader
 map("n", "<SPACE>", "<Nop>", opts_nore)
+-- Disable <visual>-capitilzation
 map("v", "U", "<Nop>", opts_nore)
 vim.g.mapleader = " "
 
@@ -393,7 +396,7 @@ require("nvim-tree").setup({
     actions = {
         open_file = {
             window_picker = {
-                enable = false,
+                enable = true,
             },
         },
     },
