@@ -74,7 +74,10 @@ autocmd BufWinEnter *
             \ | set nowrap
             \ | endif
 
-"autocmd Filetype lua setlocal shiftwidth=2
+autocmd Filetype xml setlocal shiftwidth=2
+
+" Use xml syntax when working with xacro files
+au BufReadPost *.xacro set syntax=xml
 ]])
 
 -- Disable mouse mode
@@ -183,7 +186,7 @@ require("telescope").setup({
     defaults = {
         file_ignore_patterns = {
             "build",
-            "install",
+            -- "install",
             "log",
         },
     },
@@ -530,6 +533,7 @@ map("n", "<leader>s", "<cmd>update<cr>", opts_nore)
 map("n", "<leader><ESC>", "<cmd>noh<cr>", opts_nore)
 
 local wk = require("which-key")
+
 
 wk.register({
     f = {
