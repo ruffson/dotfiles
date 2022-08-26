@@ -15,6 +15,22 @@ return require("packer").startup(function()
     use("tpope/vim-commentary")
     -- Themes
     use("folke/tokyonight.nvim")
+    use("EdenEast/nightfox.nvim")
+    use {"catppuccin/nvim", as="catppuccin"}
+    use({
+        'rose-pine/neovim',
+        as = 'rose-pine',
+        tag = 'v1.*',
+    })
+    use({
+        'navarasu/onedark.nvim',
+        config = function()
+            require('onedark').setup {
+                style = 'deep'
+            }
+        end
+    })
+    use('Mofiqul/dracula.nvim')
     -- Outline
     use({
         "stevearc/aerial.nvim",
