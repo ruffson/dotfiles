@@ -87,7 +87,11 @@ vim.opt.mouse = ""
 -- --------------------
 vim.g.tokyonight_style = "night"
 vim.tokyonight_enable_italic_functions = true
-vim.cmd([[colorscheme tokyonight]])
+-- vim.cmd([[colorscheme tokyonight]])
+require('onedark').setup {
+    style = 'deep'
+}
+vim.cmd([[colorscheme onedark]])
 
 -- --------------------
 -- --------------------
@@ -110,7 +114,7 @@ vim.g.mapleader = " "
 -- --------------------
 require("lualine").setup({
     options = {
-        theme = "tokyonight", -- 'ayu_mirage',
+        theme = "onedark", -- "tokyonight", -- 'ayu_mirage',
     },
     sections = {
         lualine_a = {

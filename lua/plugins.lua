@@ -22,14 +22,7 @@ return require("packer").startup(function()
         as = 'rose-pine',
         tag = 'v1.*',
     })
-    use({
-        'navarasu/onedark.nvim',
-        config = function()
-            require('onedark').setup {
-                style = 'deep'
-            }
-        end
-    })
+    use('navarasu/onedark.nvim')
     use('Mofiqul/dracula.nvim')
     -- Outline
     use({
