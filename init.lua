@@ -85,9 +85,9 @@ vim.opt.mouse = ""
 -- --------------------
 -- THEME --
 -- --------------------
-vim.g.tokyonight_style = "night"
+-- vim.g.tokyonight_style = "night"
 vim.tokyonight_enable_italic_functions = true
--- vim.cmd([[colorscheme tokyonight]])
+-- vim.cmd([[colorscheme tokyonight-night]])
 require('onedark').setup {
     style = 'deep'
 }
@@ -203,6 +203,7 @@ map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts_nore)
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts_nore)
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts_nore)
 map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", opts_nore)
+map("n", "<leader>fc", "<cmd>Telescope colorscheme<cr>", opts_nore)
 -- When searching symbols, use <C-l> to filter for types (e.g. methods), select via <C-n> and <C-p>
 map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", opts_nore)
 
@@ -548,6 +549,7 @@ wk.register({
         r = "Recent",
         s = "Symbols",
         h = "Help",
+        c = "Colorscheme",
     },
     s = "Save",
     d = "Diagnostics",
