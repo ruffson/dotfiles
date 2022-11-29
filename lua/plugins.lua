@@ -74,7 +74,7 @@ return require("packer").startup(function()
     use("L3MON4D3/LuaSnip")
     use("saadparwaiz1/cmp_luasnip")
     -- Rust config for convenience
-    -- use("simrat39/rust-tools.nvim")
+    use("simrat39/rust-tools.nvim")
     use("nvim-lua/popup.nvim")
     use("mhartington/formatter.nvim")
     use("glepnir/lspsaga.nvim")

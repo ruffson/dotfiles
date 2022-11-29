@@ -47,7 +47,7 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing extra messages when using completion
 set shortmess+=c
 " Format-on-write for selected langs
-autocmd BufWritePre *.rs,*.jl,*.lua lua vim.lsp.buf.formatting_sync(nil, 200)
+" autocmd BufWritePre *.rs,*.jl,*.lua lua vim.lsp.buf.formatting_sync(nil, 200)
 set undofile " Maintain undo history between sessions
 set undodir=~/.local/share/nvim/undo
 autocmd BufReadPost *
@@ -363,29 +363,12 @@ require("clangd_extensions").setup({
     vim.api.nvim_set_keymap("n", "<leader>cs", "<cmd>ClangdSwitchSourceHeader<cr>", { noremap = true }),
 })
 -- -------------------------
--- Enable Rust using Rust tools
-local opts = {
-    on_attach = on_attach,
-    tools = { -- rust-tools options
-        autoSetHints = true,
-        hover_with_actions = true,
-        inlay_hints = {
-            show_parameter_hints = true,
-            parameter_hints_prefix = "",
-            other_hints_prefix = "",
-        },
-    },
+require("rust-tools").setup({
+    -- on_attach = on_attach,
     server = {
-        settings = {
-            ["rust-analyzer"] = {
-                checkOnSave = {
-                    command = "clippy",
-                },
-            },
-        },
+        on_attach = on_attach,
     },
-}
--- require("rust-tools").setup(opts)
+})
 
 -- --------------------
 -- Nvim-Tree --
