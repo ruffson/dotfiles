@@ -4,7 +4,7 @@ return {
   color_scheme = "Grape",
   -- color_scheme = "MaterialOcean",
   -- font = wezterm.font("JetBrainsMono Nerd Font"),
-  font = wezterm.font("CaskaydiaCove Nerd Font"),
+  font = wezterm.font("Cascadia Code PL"),
   font_size = 13,
   warn_about_missing_glyphs = false,
   window_decorations = "NONE",
