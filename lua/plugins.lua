@@ -28,13 +28,6 @@ return require("packer").startup(function()
     use({'Everblush/everblush.nvim', as='everblush'})
     use 'tiagovla/tokyodark.nvim'
     use 'projekt0n/github-nvim-theme'
-    -- Outline
-    use({
-        "stevearc/aerial.nvim",
-        config = function()
-            require("aerial").setup()
-        end,
-    })
     use("jiangmiao/auto-pairs")
     use("chrisbra/csv.vim")
     use("tpope/vim-fugitive")

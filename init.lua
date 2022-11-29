@@ -212,28 +212,37 @@ map("n", "<leader>h", "<cmd>Telescope howdoi<cr>", opts_nore)
 -- --------------------
 -- Lsp saga --
 -- --------------------
-local on_attach = function(client, bufnr)
-    local function map(mode, lhs, rhs, opts)
-        opts = vim.tbl_extend("force", { noremap = true, silent = true }, opts or {})
-        vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
-    end
-    map("n", "gh", "<cmd>Lspsaga lsp_finder<cr>")
-    map("n", "gs", "<cmd>Lspsaga signatur_help<cr>")
-    map("n", "gr", "<cmd>Lspsaga rename<cr>")
-    map("n", "gd", "<cmd>Lspsaga preview_definition<cr>")
-    map("n", "gD", "vim.lsp.buf.definition()<cr>")
-    map("n", "ga", "<cmd>Lspsaga code_action<cr>")
-    map("n", "K", "<cmd>Lspsaga hover_doc<cr>")
-    map("n", "go", "<cmd>Lspsaga show_line_diagnostics<cr>")
-    map("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<cr>")
-    map("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<cr>")
-    -- map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
-    -- map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
-    map("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>")
 
-    -- Add Aerial to on_attach:
-    require("aerial").on_attach(client, bufnr)
-end
+local keymap = vim.keymap.set
+require('lspsaga').init_lsp_saga({
+    symbol_in_winbar = {
+        enable=true,
+        -- in_custom = false,
+        -- show_file=true,
+    }
+})
+-- Lsp finder find the symbol definition implement reference
+-- when you use action in finder like open vsplit then you can
+-- use <C-t> to jump back
+keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+-- Code action
+keymap({"n","v"}, "ga", "<cmd>Lspsaga code_action<CR>", { silent = true })
+-- Rename
+keymap("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true })
+-- Peek Definition
+-- you can edit the definition file in this flaotwindow
+-- also support open/vsplit/etc operation check definition_action_keys
+-- support tagstack C-t jump back
+keymap("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
+keymap("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
+keymap("n", "go", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
+-- Diagnsotic jump can use `<c-o>` to jump back
+keymap("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
+keymap("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
+keymap("n","<leader>o", "<cmd>LSoutlineToggle<CR>",{ silent = true })
+keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+-- keymap("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
+-- keymap("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
 
 -- --------------------
 -- LSP/CMP Setup --
@@ -392,13 +401,6 @@ require("nvim-tree").setup({
         },
     },
 })
-
--- --------------------
--- AERIAL --
--- --------------------
-require("aerial").setup({})
-map("n", "<leader>ot", "<cmd>AerialToggle<cr>", opts_nore)
-map("n", "<leader>of", "<cmd>AerialToggle float<cr>", opts_nore)
 
 -- --------------------
 -- FORMATTER --
@@ -561,11 +563,7 @@ wk.register({
         i = "File",
         t = "Type",
     },
-    o = {
-        name = "Outline",
-        t = "toggle",
-        f = "floating",
-    },
+    o = "Outline toggle",
     c = {
         name = "c/c++",
         s = "switch source/header file",
