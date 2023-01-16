@@ -70,7 +70,17 @@ return require("packer").startup(function()
     use("simrat39/rust-tools.nvim")
     use("nvim-lua/popup.nvim")
     use("mhartington/formatter.nvim")
-    use("glepnir/lspsaga.nvim")
+    use({
+        "glepnir/lspsaga.nvim",
+        branch = "main",
+        config = function()
+            require('lspsaga').setup({
+                symbol_in_winbar = {
+                    enable=true,
+                }
+            })
+        end,
+    })
     use("ggandor/leap.nvim")
     use("zane-/howdoi.nvim")
     use("khaveesh/vim-fish-syntax")

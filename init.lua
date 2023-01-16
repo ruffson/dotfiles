@@ -214,13 +214,6 @@ map("n", "<leader>h", "<cmd>Telescope howdoi<cr>", opts_nore)
 -- --------------------
 
 local keymap = vim.keymap.set
-require('lspsaga').init_lsp_saga({
-    symbol_in_winbar = {
-        enable=true,
-        -- in_custom = false,
-        -- show_file=true,
-    }
-})
 -- Lsp finder find the symbol definition implement reference
 -- when you use action in finder like open vsplit then you can
 -- use <C-t> to jump back
