@@ -36,13 +36,12 @@ set splitright
 set scrolloff=5
 set clipboard+=unnamedplus
 set diffopt+=vertical
-set foldmethod=syntax
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable
 " Disable this shortcut as it conflicts with barbar's picker
 let g:AutoPairsShortcutToggle = ''
 set synmaxcol=1024
-" set foldmethod=expr
-" set foldexpr=nvim_treesitter#foldexpr()
-set nofoldenable
 set completeopt=menuone,noinsert,noselect
 " Avoid showing extra messages when using completion
 set shortmess+=c
