@@ -136,15 +136,14 @@ vim.opt.laststatus = 3
 -- Set barbar's options
 require("bufferline").setup({
     tabpages = false,
-    closable = false,
     auto_hide = true,
 
     -- Configure icons on the bufferline.
-    icon_separator_active = "▎",
-    icon_separator_inactive = "▎",
-    icon_close_tab = "",
-    icon_close_tab_modified = "●",
-    icon_pinned = "車",
+    icons = {
+        button = false,
+        modified = { button = "●" },
+        pinned = { button =  "車"},
+    },
     insert_at_end = true,
     insert_at_start = false,
     maximum_length = 30,
