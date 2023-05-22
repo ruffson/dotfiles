@@ -338,10 +338,23 @@ nvim_lsp.julials.setup({
 })
 -- -------------------------
 -- Enable LSP server for PYTHON
-nvim_lsp.pylsp.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-})
+-- nvim_lsp.pylsp.setup({
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+-- })
+
+-- Configure `ruff-lsp`.
+-- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp
+-- For the default config, along with instructions on how to customize the settings
+nvim_lsp.ruff_lsp.setup {
+  on_attach = on_attach,
+  init_options = {
+    settings = {
+      -- Any extra CLI arguments for `ruff` go here.
+      args = {},
+    }
+  }
+}
 -- -------------------------
 -- Enable LSP server for C/C++
 require("clangd_extensions").setup({
