@@ -57,6 +57,10 @@ return require("packer").startup(function()
         "romgrk/barbar.nvim",
         requires = "kyazdani42/nvim-web-devicons",
     })
+    use({
+        "wfxr/minimap.vim",
+        run = ":!cargo install --locked code-minimap"
+    })
     -- CMP completion (formerly compe)
     use("hrsh7th/cmp-nvim-lsp")
     use("hrsh7th/cmp-buffer")
