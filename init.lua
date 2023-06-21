@@ -76,7 +76,7 @@ autocmd BufWinEnter *
 autocmd Filetype xml setlocal shiftwidth=2
 
 " Use xml syntax when working with xacro files
-au BufReadPost *.xacro set syntax=xml
+" au BufReadPost *.sdf *.xacro *.launch *.urdf set syntax=xml
 ]])
 
 -- Disable mouse mode
@@ -86,11 +86,11 @@ vim.opt.mouse = ""
 -- --------------------
 -- vim.g.tokyonight_style = "night"
 vim.tokyonight_enable_italic_functions = true
--- vim.cmd([[colorscheme tokyonight-night]])
-require('onedark').setup {
-    style = 'deep'
-}
-vim.cmd([[colorscheme onedark]])
+vim.cmd([[colorscheme tokyonight-night]])
+-- require('onedark').setup {
+--     style = 'deep'
+-- }
+-- vim.cmd([[colorscheme onedark]])
 
 -- --------------------
 -- --------------------
@@ -113,7 +113,7 @@ vim.g.mapleader = " "
 -- --------------------
 require("lualine").setup({
     options = {
-        theme = "onedark", -- "tokyonight", -- 'ayu_mirage',
+        theme = "tokyonight", -- "tokyonight", -- 'ayu_mirage',
     },
     sections = {
         lualine_a = {

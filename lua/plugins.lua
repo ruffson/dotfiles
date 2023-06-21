@@ -22,11 +22,15 @@ return require("packer").startup(function()
         as = 'rose-pine',
         tag = 'v1.*',
     })
+    use({
+        'tadachs/ros-nvim',
+        config = function() require("ros-nvim").setup({only_workspace = true}) end,
+    })
     use('navarasu/onedark.nvim')
     use('Mofiqul/dracula.nvim')
     use("rebelot/kanagawa.nvim")
     use({'Everblush/everblush.nvim', as='everblush'})
-    use 'tiagovla/tokyodark.nvim'
+    -- use 'tiagovla/tokyodark.nvim'
     use 'projekt0n/github-nvim-theme'
     use("jiangmiao/auto-pairs")
     use("chrisbra/csv.vim")
