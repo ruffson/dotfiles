@@ -1,0 +1,9 @@
+[tool.ruff]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+#select = ["E", "F"]
+#ignore = []
+
+line-length = 100
+
+# Assume Python 3.10.
+#target-version = "py310"
