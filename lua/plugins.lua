@@ -85,6 +85,9 @@ return require("packer").startup(function()
             require('lspsaga').setup({
                 symbol_in_winbar = {
                     enable=true,
+                },
+                diagnostic = {
+                    on_insert = false;
                 }
             })
         end,
