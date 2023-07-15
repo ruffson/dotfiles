@@ -92,6 +92,8 @@ vim.cmd([[colorscheme tokyonight-night]])
 -- }
 -- vim.cmd([[colorscheme onedark]])
 
+-- Set color of separating line of split windows
+vim.cmd.highlight({ "WinSeparator", "guifg=#3b4261" })
 -- --------------------
 -- --------------------
 -- PLUGIN SPECIFIC --
