@@ -213,23 +213,35 @@ local keymap = vim.keymap.set
 -- Lsp finder find the symbol definition implement reference
 -- when you use action in finder like open vsplit then you can
 -- use <C-t> to jump back
-keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+keymap("n", "gh", "<cmd>Lspsaga finder<CR>", { silent = true })
+keymap("n", "<leader>lf", "<cmd>Lspsaga finder<CR>", { silent = true })
 -- Code action
 keymap({"n","v"}, "ga", "<cmd>Lspsaga code_action<CR>", { silent = true })
+keymap("n", "<leader>la", "<cmd>Lspsaga code_action<CR>", { silent = true })
 -- Rename
 keymap("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true })
+keymap("n", "<leader>lr", "<cmd>Lspsaga rename<CR>", { silent = true })
 -- Peek Definition
 -- you can edit the definition file in this flaotwindow
 -- also support open/vsplit/etc operation check definition_action_keys
 -- support tagstack C-t jump back
 keymap("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
-keymap("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
-keymap("n", "go", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
+keymap("n", "<leader>lp", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
+
+keymap("n", "<leader>ld", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
+
+keymap("n", "<leader>lc", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
+
+keymap("n","<leader>lo", "<cmd>Lspsaga outline<CR>",{ silent = true })
+
+
 -- Diagnsotic jump can use `<c-o>` to jump back
 keymap("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
 keymap("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
-keymap("n","<leader>o", "<cmd>LSoutlineToggle<CR>",{ silent = true })
+
+
 keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+keymap("n", "<leader>ld", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 -- keymap("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
 -- keymap("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
 
@@ -565,9 +577,19 @@ wk.register({
         i = "File",
         t = "Type",
     },
-    o = "Outline toggle",
     c = {
         name = "c/c++",
         s = "switch source/header file",
+    },
+    l = {
+        name = "LSP",
+        f = "Find symbol",
+        o = "Outline",
+        p = "Peek Defintion",
+        d = "Hover Doc",
+        l = "Line Diagnostics",
+        c = "Cursor Diagnostics",
+        a = "Action",
+        r = "Rename",
     },
 }, { prefix = "<leader>" })
