@@ -120,22 +120,47 @@ require("lazy").setup({
     { "nvim-lua/lsp_extensions.nvim" },
 
     -- CMP completion (formerly compe)
-    {
-        "hrsh7th/nvim-cmp",
+    -- {
+    --     "hrsh7th/nvim-cmp",
+    --     lazy = false,
+    --     dependencies = {
+    --         "hrsh7th/cmp-nvim-lsp",
+    --         "hrsh7th/cmp-buffer",
+    --         "hrsh7th/cmp-path",
+    --         "hrsh7th/cmp-cmdline",
+    --     },
+    -- },
+    -- {
+    --     "L3MON4D3/LuaSnip",
+    --     version = "1.*",
+    -- },
+    -- { "saadparwaiz1/cmp_luasnip" },
+
+
+    {  'ms-jpq/coq_nvim',
         lazy = false,
+        branch = 'coq',
+        init = function()
+            vim.g.coq_settings =
+            {
+                -- Auto-start without message
+                ["auto_start"] = "shut-up",
+                -- Disable keybindings for C-k and C-h
+                ["keymap.recommended"] = false,
+                ["keymap.bigger_preview"] = "<nop>",
+                ["keymap.jump_to_mark"]= "<nop>"
+            }
+        end,
         dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
+            'ms-jpq/coq.artifacts',
+            branch = 'artifacts',
         },
+        -- config = function()
+        --     require("config.ms_jpq_coq")
+        -- end,
     },
-    {
-        "L3MON4D3/LuaSnip",
-        version = "1.*",
-    },
+
     { "mhartington/formatter.nvim" },
-    { "saadparwaiz1/cmp_luasnip" },
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
