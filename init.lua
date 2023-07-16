@@ -81,13 +81,14 @@ vim.opt.mouse = ""
 -- vim.g.tokyonight_style = "night"
 vim.tokyonight_enable_italic_functions = true
 vim.cmd([[colorscheme tokyonight-night]])
+vim.cmd.highlight({ "WinSeparator", "guifg=#3b4261" })
 -- require('onedark').setup {
 --     style = 'deep'
 -- }
 -- vim.cmd([[colorscheme onedark]])
 
 -- Set color of separating line of split windows
-vim.cmd.highlight({ "WinSeparator", "guifg=#3b4261" })
+
 -- --------------------
 -- --------------------
 -- PLUGIN SPECIFIC --
