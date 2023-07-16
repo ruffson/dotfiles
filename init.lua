@@ -406,6 +406,7 @@ require("nvim-tree").setup({
     },
     view = {
         adaptive_size = true,
+        preserve_window_proportions = true,
     },
     actions = {
         open_file = {
