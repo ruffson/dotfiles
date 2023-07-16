@@ -94,6 +94,11 @@ require("lazy").setup({
     { "nvim-lua/plenary.nvim" },
     { "ggandor/leap.nvim" },
     { "zane-/howdoi.nvim" },
+    {
+        'kevinhwang91/nvim-ufo',
+        lazy = false,
+        dependencies = 'kevinhwang91/promise-async'
+    },
     { 
         "danymat/neogen", 
         dependencies = "nvim-treesitter/nvim-treesitter", 

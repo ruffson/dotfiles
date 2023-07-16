@@ -33,9 +33,8 @@ set splitright
 set scrolloff=5
 set clipboard+=unnamedplus
 set diffopt+=vertical
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set nofoldenable
+"set foldmethod=indent
+"set nofoldenable
 " Disable this shortcut as it conflicts with barbar's picker
 let g:AutoPairsShortcutToggle = ''
 set synmaxcol=1024
@@ -388,6 +387,28 @@ require("rust-tools").setup({
 })
 
 local coq = require("coq")
+
+
+-- --------------------
+-- Nvim UFO --
+-- --------------------
+-- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+vim.o.foldcolumn = '0' -- '0' is not bad
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
+local language_servers = require("lspconfig").util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
+for _, ls in ipairs(language_servers) do
+    require('lspconfig')[ls].setup({
+        capabilities = capabilities
+    })
+end
+require('ufo').setup()
 
 -- --------------------
 -- Nvim-Tree --
