@@ -128,39 +128,23 @@ require("lualine").setup({
 vim.opt.laststatus = 3
 
 -- --------------------
--- barbar.nvim --
+-- Bufferline --
 -- --------------------
--- Set barbar's options
-require("bufferline").setup({
-    tabpages = false,
-    auto_hide = true,
 
-    -- Configure icons on the bufferline.
-    icons = {
-        button = false,
-        modified = { button = "●" },
-        pinned = { button =  "車"},
-    },
-    insert_at_end = true,
-    insert_at_start = false,
-    maximum_length = 30,
-    semantic_letters = true,
-    -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
-    -- where X is the buffer number. But only a static string is accepted here.
-    no_name_title = nil,
-})
--- Move to previous/next
--- map <S-k> <Nop>
-map("n", "[b", "<Nop>", opts_silent)
-map("n", "[b", "<Cmd>BufferPrevious<CR>", opts_silent)
-map("n", "]b", "<Nop>", opts_silent)
-map("n", "]b", "<Cmd>BufferNext<CR>", opts_silent)
+require("bufferline").setup{
+    options = {
+       separator_style = "slant", 
+       show_buffer_close_icons = false,
+       show_close_icon = false,
+       always_show_bufferline = false,
+    }
+}
 -- Pin/unpin buffer
-map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts_silent)
+map("n", "<A-p>", "<Cmd>BufferLineTogglePin<CR>", opts_silent)
 --- Close buffer
-map("n", "<A-x>", "<Cmd>BufferClose<CR>", opts_silent)
+map("n", "<A-x>", "<Cmd>BufferLinePickClose<CR>", opts_silent)
 -- Magic buffer-picking mode
-map("n", "<C-p>", "<Cmd>BufferPick<CR>", opts_silent)
+map("n", "<C-p>", "<Cmd>BufferLinePick<CR>", opts_silent)
 
 --------------------
 -- Workspaces --
@@ -384,7 +368,7 @@ require("rust-tools").setup({
 -- Nvim-Tree --
 -- --------------------
 vim.api.nvim_set_keymap("n", "<c-n>", ":NvimTreeToggle<cr>", { noremap = true })
--- vim.g.nvim_tree_disable_window_picker = "1"
+vim.g.nvim_tree_disable_window_picker = "1"
 require("nvim-tree").setup({
     update_focused_file = {
         enable = true,
