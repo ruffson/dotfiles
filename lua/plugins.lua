@@ -1,86 +1,55 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
--- Bootstrapping packer.nvim
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap =
-        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+-- Bootstrapping lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
 -- Only required if you have packer configured as `opt`
 -- vim.cmd [[packadd packer.nvim]]
-return require("packer").startup(function()
-    use({ "wbthomason/packer.nvim" })
-    use("cespare/vim-toml")
-    use("tpope/vim-commentary")
-    -- Themes
-    use("folke/tokyonight.nvim")
-    use("EdenEast/nightfox.nvim")
-    use {"catppuccin/nvim", as="catppuccin"}
-    use({
-        'rose-pine/neovim',
-        as = 'rose-pine',
-        tag = 'v1.*',
-    })
-    use({
-        'tadachs/ros-nvim',
-        config = function() require("ros-nvim").setup({only_workspace = true}) end,
-    })
-    use('navarasu/onedark.nvim')
-    use('Mofiqul/dracula.nvim')
-    use("rebelot/kanagawa.nvim")
-    use({'Everblush/everblush.nvim', as='everblush'})
-    -- use 'tiagovla/tokyodark.nvim'
-    use 'projekt0n/github-nvim-theme'
-    use("jiangmiao/auto-pairs")
-    use("chrisbra/csv.vim")
-    use("tpope/vim-fugitive")
-    use("junegunn/gv.vim")
-    use("machakann/vim-highlightedyank")
-    use("folke/which-key.nvim")
-    use("kshenoy/vim-signature")
-    use("tpope/vim-unimpaired")
-    use("qpkorr/vim-bufkill")
-    use("thaerkh/vim-workspace")
-    use("JuliaEditorSupport/julia-vim")
-    use("neovim/nvim-lspconfig")
-    use("nvim-lua/lsp_extensions.nvim")
-    use("nvim-lua/plenary.nvim")
-    use("lewis6991/gitsigns.nvim")
-    use("lukas-reineke/indent-blankline.nvim")
-    use("p00f/clangd_extensions.nvim")
-    -- Cheatsheet
-    use("sudormrfbin/cheatsheet.nvim")
-    -- nvim-tree
-    use("kyazdani42/nvim-web-devicons")
-    use("kyazdani42/nvim-tree.lua")
-    use("dhruvasagar/vim-zoom")
-    use("nvim-telescope/telescope.nvim")
-    use("nvim-lualine/lualine.nvim")
-    use({
-        "romgrk/barbar.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
-    })
-    use({
+require("lazy").setup({
+    { "cespare/vim-toml" },
+    { "tpope/vim-commentary" },
+    -- -------------
+    -- UI
+    --
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+    { "nvim-tree/nvim-web-devicons" },
+    { "nvim-tree/nvim-tree.lua"  },
+    { "nvim-lualine/lualine.nvim", lazy = false },
+    {
+        'romgrk/barbar.nvim',
+        dependencies = {
+            'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+            'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+        },
+        init = function() vim.g.barbar_auto_setup = false end,
+        -- opts = {
+        --   -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+        --   -- animation = true,
+        --   -- insert_at_start = true,
+        --   -- …etc.
+        -- },
+        version = '^1.0.0', -- optional: only update when a new 1.x version is released
+    },
+    {
         "wfxr/minimap.vim",
-        run = ":!cargo install --locked code-minimap"
-    })
-    -- CMP completion (formerly compe)
-    use("hrsh7th/cmp-nvim-lsp")
-    use("hrsh7th/cmp-buffer")
-    use("hrsh7th/cmp-path")
-    use("hrsh7th/cmp-cmdline")
-    use("hrsh7th/nvim-cmp")
-    -- vsnip snippets
-    use("L3MON4D3/LuaSnip")
-    use("saadparwaiz1/cmp_luasnip")
-    -- Rust config for convenience
-    use("simrat39/rust-tools.nvim")
-    use("nvim-lua/popup.nvim")
-    use("mhartington/formatter.nvim")
-    use({
-        "glepnir/lspsaga.nvim",
-        branch = "main",
+        build = ":!cargo install --locked code-minimap"
+    },
+    {
+        "nvimdev/lspsaga.nvim",
         config = function()
             require('lspsaga').setup({
                 symbol_in_winbar = {
@@ -91,26 +60,84 @@ return require("packer").startup(function()
                 }
             })
         end,
-    })
-    use("ggandor/leap.nvim")
-    use("zane-/howdoi.nvim")
-    use("khaveesh/vim-fish-syntax")
-    use {
-        "danymat/neogen",
-        requires = "nvim-treesitter/nvim-treesitter",
-        -- Uncomment next line if you want to follow only stable versions
-        -- tag = "*"
-    }
-    use({
-        "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-    })
-    -- should always go last
-    use("ryanoasis/vim-devicons")
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons'
+        }
+    },
+    -- {"EdenEast/nightfox.nvim"},
+    -- {"catppuccin/nvim", as="catppuccin"},
+    -- {'navarasu/onedark.nvim'},
+    -- {'Mofiqul/dracula.nvim'},
+    -- {"rebelot/kanagawa.nvim"},
+    -- {'Everblush/everblush.nvim', as='everblush'},
+    
+    -- -------------
+    -- TWEAKS
+    --
+    { "jiangmiao/auto-pairs" },
+    { "chrisbra/csv.vim" },
+    { "tpope/vim-fugitive" },
+    { "folke/which-key.nvim" },
+    { "kshenoy/vim-signature" },
+    { "tpope/vim-unimpaired" },
+    { "qpkorr/vim-bufkill" },
+    { "thaerkh/vim-workspace" },
+    { "lewis6991/gitsigns.nvim" },
+    { "lukas-reineke/indent-blankline.nvim" },
+    { "sudormrfbin/cheatsheet.nvim" },
+    { "dhruvasagar/vim-zoom" },
+    { "nvim-telescope/telescope.nvim" },
+    { "nvim-lua/plenary.nvim" },
+    { "ggandor/leap.nvim" },
+    { "zane-/howdoi.nvim" },
+    { 
+        "danymat/neogen", 
+        dependencies = "nvim-treesitter/nvim-treesitter", 
+        config = true,
+    },
 
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-        require("packer").sync()
-    end
-end)
+    -- -------------
+    -- LANGUAGES
+    --
+    {
+        'tadachs/ros-nvim',
+        config = function() require("ros-nvim").setup({only_workspace = true}) end,
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    { "JuliaEditorSupport/julia-vim"},
+    { "p00f/clangd_extensions.nvim" },
+    { "simrat39/rust-tools.nvim" },
+    { "khaveesh/vim-fish-syntax" },
+
+    -- -------------
+    -- LSP
+    --
+    { "neovim/nvim-lspconfig" },
+    { "nvim-lua/lsp_extensions.nvim" },
+
+    -- CMP completion (formerly compe)
+    {
+        "hrsh7th/nvim-cmp",
+        event = "InsertEnter",
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+        },
+    },
+    {
+        "L3MON4D3/LuaSnip",
+        version = "1.*",
+    },
+    { "mhartington/formatter.nvim" },
+    { "saadparwaiz1/cmp_luasnip" },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+    },
+    -- should always go last
+    { "ryanoasis/vim-devicons" },
+
+})

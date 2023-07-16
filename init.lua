@@ -4,10 +4,7 @@
 -- --------------------
 -- --------------------
 
--- Use packer.nvim
--- Install via:
---  git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
--- Load plugins from lua/plugins.lua:
+-- Use lazy.nvim
 require("plugins")
 -- --------------------
 -- --------------------
@@ -59,12 +56,6 @@ endif
 syntax on
 set background=dark
 set cursorline
-
-" Automatically re-synchronize packer on plugins change
-augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-augroup end
 
 " Disable syntax highlighting on larger files
 autocmd BufWinEnter *
