@@ -68,6 +68,9 @@ autocmd Filetype xml setlocal shiftwidth=2
 
 " Use xml syntax when working with xacro files
 " au BufReadPost *.sdf *.xacro *.launch *.urdf set syntax=xml
+
+" Highlight yanked line
+au TextYankPost * silent! lua vim.highlight.on_yank()
 ]])
 
 -- Disable mouse mode
