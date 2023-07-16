@@ -85,7 +85,7 @@ require("lazy").setup({
     { "kshenoy/vim-signature" },
     { "tpope/vim-unimpaired" },
     { "qpkorr/vim-bufkill" },
-    { "thaerkh/vim-workspace" },
+    { 'rmagatti/auto-session', lazy = false },
     { "lewis6991/gitsigns.nvim" },
     { "lukas-reineke/indent-blankline.nvim" },
     { "sudormrfbin/cheatsheet.nvim" },
