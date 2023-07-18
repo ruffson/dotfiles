@@ -154,31 +154,38 @@ map("n", "<C-p>", "<Cmd>BufferLinePick<CR>", opts_silent)
 --------------------
 -- Workspaces --
 -- --------------------
-vim.o.sessionoptions="blank,buffers,curdir,help,tabpages,winsize,winpos,terminal,localoptions"
+HOME = os.getenv("HOME")
+vim.g.workspace_session_directory = HOME .. "/.local/share/nvim/sessions/"
+vim.g.workspace_autocreate = "1"
+vim.g.workspace_session_disable_on_args = "1"
+vim.g.workspace_persist_undo_history = "0"
+vim.g.workspace_autosave = "0"
+map("n", "<leader>w", "<cmd>ToggleWorkspace<cr>", opts_nore)
+-- vim.o.sessionoptions="blank,buffers,curdir,help,tabpages,winsize,winpos,terminal,localoptions"
 
-require("auto-session").setup({ 
-  auto_session_enable_last_session = false,
-  auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
-  -- auto_session_enabled = true,
-  auto_save_enabled = nil,
-  auto_restore_enabled = nil,
-  auto_session_suppress_dirs = nil,
-  auto_session_use_git_branch = nil,
-  -- the configs below are lua only
-  bypass_session_save_file_types = nil
-})
--- Workaround to close nvim tree before saving session
-vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-  pattern = 'NvimTree*',
-  callback = function()
-    local api = require('nvim-tree.api')
-    local view = require('nvim-tree.view')
+-- require("auto-session").setup({ 
+--   auto_session_enable_last_session = false,
+--   auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
+--   -- auto_session_enabled = true,
+--   auto_save_enabled = nil,
+--   auto_restore_enabled = nil,
+--   auto_session_suppress_dirs = nil,
+--   auto_session_use_git_branch = nil,
+--   -- the configs below are lua only
+--   bypass_session_save_file_types = nil
+-- })
+-- -- Workaround to close nvim tree before saving session
+-- vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+--   pattern = 'NvimTree*',
+--   callback = function()
+--     local api = require('nvim-tree.api')
+--     local view = require('nvim-tree.view')
 
-    if not view.is_visible() then
-      api.tree.open()
-    end
-  end,
-})
+--     if not view.is_visible() then
+--       api.tree.open()
+--     end
+--   end,
+-- })
 
 -- --------------------
 -- Leap --
