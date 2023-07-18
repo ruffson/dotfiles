@@ -107,12 +107,18 @@ vim.g.mapleader = " "
 -- --------------------
 -- Lualine --
 -- --------------------
+
+-- disable show-mode in COMMAND line because it will show up in lualine
+vim.cmd([[set noshowmode]])
 require("lualine").setup({
     options = {
         theme = "tokyonight", -- "tokyonight", -- 'ayu_mirage',
     },
     sections = {
         lualine_a = {
+            {
+                "mode"
+            },
             {
                 "filename",
                 path = 1,
