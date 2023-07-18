@@ -148,6 +148,7 @@ map("n", "<C-p>", "<Cmd>BufferLinePick<CR>", opts_silent)
 --------------------
 -- Workspaces --
 -- --------------------
+vim.o.sessionoptions="blank,buffers,curdir,help,tabpages,winsize,winpos,terminal,localoptions"
 
 require("auto-session").setup({ 
   auto_session_enable_last_session = false,
