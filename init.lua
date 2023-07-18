@@ -550,6 +550,13 @@ vim.api.nvim_set_keymap("n", "<leader>ai", ":lua require('neogen').generate({ ty
 vim.api.nvim_set_keymap("n", "<leader>at", ":lua require('neogen').generate({ type = 'type' })<CR>", opts_silent)
 
 -- --------------------
+-- CSV
+-- --------------------
+
+vim.g.csv_nomap_up = 1
+vim.g.csv_nomap_down = 1
+
+-- --------------------
 -- Misc Keybindings
 -- --------------------
 
