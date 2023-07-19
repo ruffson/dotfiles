@@ -16,8 +16,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Only required if you have packer configured as `opt`
 -- vim.cmd [[packadd packer.nvim]]
 require("lazy").setup({
-    { "cespare/vim-toml" },
-    { "tpope/vim-commentary" },
     -- -------------
     -- UI
     --
@@ -78,6 +76,7 @@ require("lazy").setup({
     -- -------------
     -- TWEAKS
     --
+    { "tpope/vim-commentary" },
     { "jiangmiao/auto-pairs" },
     { "chrisbra/csv.vim" },
     { "tpope/vim-fugitive" },
@@ -118,6 +117,7 @@ require("lazy").setup({
     { "p00f/clangd_extensions.nvim" },
     { "simrat39/rust-tools.nvim" },
     { "khaveesh/vim-fish-syntax" },
+    { "cespare/vim-toml" },
 
     -- -------------
     -- LSP
@@ -126,45 +126,45 @@ require("lazy").setup({
     { "nvim-lua/lsp_extensions.nvim" },
 
     -- CMP completion (formerly compe)
-    -- {
-    --     "hrsh7th/nvim-cmp",
-    --     lazy = false,
-    --     dependencies = {
-    --         "hrsh7th/cmp-nvim-lsp",
-    --         "hrsh7th/cmp-buffer",
-    --         "hrsh7th/cmp-path",
-    --         "hrsh7th/cmp-cmdline",
-    --     },
-    -- },
-    -- {
-    --     "L3MON4D3/LuaSnip",
-    --     version = "1.*",
-    -- },
-    -- { "saadparwaiz1/cmp_luasnip" },
-
-
-    {  'ms-jpq/coq_nvim',
+    {
+        "hrsh7th/nvim-cmp",
         lazy = false,
-        branch = 'coq',
-        init = function()
-            vim.g.coq_settings =
-            {
-                -- Auto-start without message
-                ["auto_start"] = "shut-up",
-                -- Disable keybindings for C-k and C-h
-                ["keymap.recommended"] = false,
-                ["keymap.bigger_preview"] = "<nop>",
-                ["keymap.jump_to_mark"]= "<nop>"
-            }
-        end,
         dependencies = {
-            'ms-jpq/coq.artifacts',
-            branch = 'artifacts',
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
         },
-        -- config = function()
-        --     require("config.ms_jpq_coq")
-        -- end,
     },
+    {
+        "L3MON4D3/LuaSnip",
+        version = "1.*",
+    },
+    { "saadparwaiz1/cmp_luasnip" },
+
+
+    -- {  'ms-jpq/coq_nvim',
+    --     lazy = false,
+    --     branch = 'coq',
+    --     init = function()
+    --         vim.g.coq_settings =
+    --         {
+    --             -- Auto-start without message
+    --             ["auto_start"] = "shut-up",
+    --             -- Disable keybindings for C-k and C-h
+    --             ["keymap.recommended"] = false,
+    --             ["keymap.bigger_preview"] = "<nop>",
+    --             ["keymap.jump_to_mark"]= "<nop>"
+    --         }
+    --     end,
+    --     dependencies = {
+    --         'ms-jpq/coq.artifacts',
+    --         branch = 'artifacts',
+    --     },
+    --     -- config = function()
+    --     --     require("config.ms_jpq_coq")
+    --     -- end,
+    -- },
 
     { "mhartington/formatter.nvim" },
     {
