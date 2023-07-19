@@ -16,6 +16,11 @@ vim.opt.rtp:prepend(lazypath)
 -- Only required if you have packer configured as `opt`
 -- vim.cmd [[packadd packer.nvim]]
 require("lazy").setup({
+    {
+        "nvim-neorg/neorg",
+        build = ":Neorg sync-parsers",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
     -- -------------
     -- UI
     --
