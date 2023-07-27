@@ -176,13 +176,13 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
     },
-  {
-    "dstein64/vim-startuptime",
-    cmd = "StartupTime",
-    init = function()
-      vim.g.startuptime_tries = 10
-    end,
-  },
+    {
+        "dstein64/vim-startuptime",
+        cmd = "StartupTime",
+        init = function()
+          vim.g.startuptime_tries = 10
+        end,
+    },
     -- should always go last
     { "ryanoasis/vim-devicons" },
 
