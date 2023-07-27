@@ -177,6 +177,12 @@ require("lazy").setup({
         build = ":TSUpdate",
     },
     {
+        "folke/trouble.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons"
+        },
+    },
+    {
         "dstein64/vim-startuptime",
         cmd = "StartupTime",
         init = function()
