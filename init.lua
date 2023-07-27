@@ -419,6 +419,7 @@ require("neorg").setup {
                 workspaces = {
                     notes = "~/Documents/neorg",
                 },
+                default_workspace = "notes",
             },
         },
     },
