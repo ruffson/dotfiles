@@ -29,6 +29,12 @@ require("lazy").setup({
         lazy = false,
         priority = 1000,
     },
+    {"EdenEast/nightfox.nvim", lazy = true },
+    {"catppuccin/nvim", as="catppuccin", lazy = true },
+    {'navarasu/onedark.nvim', lazy = true },
+    {'Mofiqul/dracula.nvim', lazy = true },
+    {"rebelot/kanagawa.nvim", lazy = true },
+    {'Everblush/everblush.nvim', as='everblush', lazy = true },
     { 
         "nvim-tree/nvim-tree.lua",
         dependencies = {
@@ -71,12 +77,6 @@ require("lazy").setup({
         "nvim-tree/nvim-web-devicons", -- optional dependency
       },
     },
-    -- {"EdenEast/nightfox.nvim"},
-    -- {"catppuccin/nvim", as="catppuccin"},
-    -- {'navarasu/onedark.nvim'},
-    -- {'Mofiqul/dracula.nvim'},
-    -- {"rebelot/kanagawa.nvim"},
-    -- {'Everblush/everblush.nvim', as='everblush'},
     
     -- -------------
     -- TWEAKS
