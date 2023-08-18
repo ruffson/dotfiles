@@ -134,6 +134,7 @@ local opts_silent = { noremap = true, silent = true }
 map("n", "<SPACE>", "<Nop>", opts_nore)
 -- Disable <visual>-capitilzation
 map("v", "U", "<Nop>", opts_nore)
+map("v", "u", "<Nop>", opts_nore)
 vim.g.mapleader = " "
 
 -- --------------------
