@@ -109,6 +109,15 @@ require("lazy").setup({
         dependencies = "nvim-treesitter/nvim-treesitter", 
         config = true,
     },
+    {
+        "luckasRanarison/nvim-devdocs",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        opts = {}
+    },
 
     -- -------------
     -- LANGUAGES
@@ -190,6 +199,6 @@ require("lazy").setup({
         end,
     },
     -- should always go last
-    { "ryanoasis/vim-devicons" },
+    -- { "ryanoasis/vim-devicons" },
 
 })
