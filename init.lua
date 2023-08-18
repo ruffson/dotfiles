@@ -423,7 +423,7 @@ nvim_lsp.pylsp.setup({
 })
 -- -------------------------
 -- Enable LSP server for C/C++
-require("clangd_extensions").setup({
+nvim_lsp.clangd.setup({
     server = {
         on_attach = on_attach,
         capabilities = capabilities,
