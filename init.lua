@@ -296,7 +296,7 @@ keymap("n", "<leader>ld", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 -- --------------------
 
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "lua" },
+    ensure_installed = { "lua", "html", "markdown" },
     highlight = {
       enable = true,
       additional_vim_regex_highlighting = false,
