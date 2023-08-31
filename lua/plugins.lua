@@ -118,7 +118,14 @@ require("lazy").setup({
         },
         opts = {}
     },
-
+    {
+      "folke/todo-comments.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    {
+       "m4xshen/hardtime.nvim",
+       dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    },
     -- -------------
     -- LANGUAGES
     --

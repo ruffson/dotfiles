@@ -166,6 +166,12 @@ require("lualine").setup({
 vim.opt.laststatus = 3
 
 -- --------------------
+-- Todo Comments --
+-- --------------------
+
+require("todo-comments").setup()
+
+-- --------------------
 -- Bufferline --
 -- --------------------
 
@@ -232,7 +238,8 @@ require("telescope").setup({
     defaults = {
         file_ignore_patterns = {
             "build",
-            -- "install",
+            "devel",
+            "install",
             "log",
         },
     },
