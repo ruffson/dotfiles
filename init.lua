@@ -12,6 +12,7 @@ require("plugins")
 -- --------------------
 -- --------------------
 
+
 vim.cmd([[
 filetype plugin indent on
 set nobackup
@@ -33,6 +34,7 @@ set splitright
 set scrolloff=5
 set clipboard+=unnamedplus
 set diffopt+=vertical
+set colorcolumn=100
 "set foldmethod=indent
 "set nofoldenable
 " Disable this shortcut as it conflicts with barbar's picker
@@ -43,6 +45,11 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 " Format-on-write for selected langs
 " autocmd BufWritePre *.rs,*.jl,*.lua lua vim.lsp.buf.formatting_sync(nil, 200)
+
+" HIGHLIGHT TRAILING WHITESPACE
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+
 set undofile " Maintain undo history between sessions
 set undodir=~/.local/share/nvim/undo
 autocmd BufReadPost *
