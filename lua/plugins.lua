@@ -82,7 +82,11 @@ require("lazy").setup({
     -- TWEAKS
     --
     { "tpope/vim-commentary" },
-    { "jiangmiao/auto-pairs" },
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        opts = {}
+    },
     { "chrisbra/csv.vim" },
     { "tpope/vim-fugitive" },
     { "folke/which-key.nvim" },
