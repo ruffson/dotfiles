@@ -96,7 +96,11 @@ require("lazy").setup({
     { "thaerkh/vim-workspace", lazy = false},
     -- { 'rmagatti/auto-session', lazy = false },
     { "lewis6991/gitsigns.nvim" },
-    { "lukas-reineke/indent-blankline.nvim" },
+    { 
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {}
+    },
     { "sudormrfbin/cheatsheet.nvim" },
     { "dhruvasagar/vim-zoom" },
     { "nvim-telescope/telescope.nvim" },
