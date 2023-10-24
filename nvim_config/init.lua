@@ -34,7 +34,7 @@ set splitright
 set scrolloff=5
 set clipboard+=unnamedplus
 set diffopt+=vertical
-set colorcolumn=100
+" set colorcolumn=100
 "set foldmethod=indent
 "set nofoldenable
 " Disable this shortcut as it conflicts with barbar's picker
