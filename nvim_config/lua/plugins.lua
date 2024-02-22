@@ -106,7 +106,7 @@ require("lazy").setup({
     { "nvim-telescope/telescope.nvim" },
     { "nvim-lua/plenary.nvim" },
     { "ggandor/leap.nvim" },
-    { "zane-/howdoi.nvim" },
+    -- { "zane-/howdoi.nvim" },
     {
         'kevinhwang91/nvim-ufo',
         lazy = false,

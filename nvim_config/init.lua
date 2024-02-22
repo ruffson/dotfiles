@@ -252,7 +252,7 @@ require("telescope").setup({
     },
 })
 -- Add howdoi to Telescope, install howdoi via pip first
-require("telescope").load_extension("howdoi")
+-- require("telescope").load_extension("howdoi")
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts_nore)
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts_nore)
