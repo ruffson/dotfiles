@@ -450,24 +450,7 @@ nvim_lsp.pylsp.setup({
 })
 -- -------------------------
 -- Enable LSP server for C/C++
--- nvim_lsp.clangd.setup({
---     server = {
---         on_attach = on_attach,
---         capabilities = capabilities,
---     },
---     extensions = {
---         autoSetHints = true,
---         hover_with_actions = true,
---         inlay_hints = {
---             only_current_line = false,
---             show_parameter_hints = true,
---             -- The color of the hints
---             highlight = "Comment",
---         },
---     },
---     -- Keybindings to switch between header and source files of C/C++ files
---     vim.api.nvim_set_keymap("n", "<leader>cs", "<cmd>ClangdSwitchSourceHeader<cr>", { noremap = true }),
--- })
+-- Make sure to build and install ccls
 
 nvim_lsp.ccls.setup {
   init_options = {

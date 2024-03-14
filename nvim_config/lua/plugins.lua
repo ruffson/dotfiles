@@ -35,7 +35,7 @@ require("lazy").setup({
     {'Mofiqul/dracula.nvim', lazy = true },
     {"rebelot/kanagawa.nvim", lazy = true },
     {'Everblush/everblush.nvim', as='everblush', lazy = true },
-    { 
+    {
         "nvim-tree/nvim-tree.lua",
         dependencies = {
             "nvim-tree/nvim-web-devicons"
@@ -55,6 +55,9 @@ require("lazy").setup({
         "nvimdev/lspsaga.nvim",
         config = function()
             require('lspsaga').setup({
+                lightbulb = {
+                    enable = false,
+                },
                 symbol_in_winbar = {
                     enable=true,
                 },
@@ -77,7 +80,7 @@ require("lazy").setup({
         "nvim-tree/nvim-web-devicons", -- optional dependency
       },
     },
-    
+
     -- -------------
     -- TWEAKS
     --
@@ -96,7 +99,7 @@ require("lazy").setup({
     { "thaerkh/vim-workspace", lazy = false},
     -- { 'rmagatti/auto-session', lazy = false },
     { "lewis6991/gitsigns.nvim" },
-    { 
+    {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         opts = {}
@@ -112,9 +115,9 @@ require("lazy").setup({
         lazy = false,
         dependencies = 'kevinhwang91/promise-async'
     },
-    { 
-        "danymat/neogen", 
-        dependencies = "nvim-treesitter/nvim-treesitter", 
+    {
+        "danymat/neogen",
+        dependencies = "nvim-treesitter/nvim-treesitter",
         config = true,
     },
     {
