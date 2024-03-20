@@ -18,8 +18,24 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     {
         "nvim-neorg/neorg",
+        lazy = false,
         build = ":Neorg sync-parsers",
         dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+          require("neorg").setup {
+            load = {
+              ["core.defaults"] = {}, -- Loads default behaviour
+              ["core.concealer"] = {}, -- Adds pretty icons to your documents
+              ["core.dirman"] = { -- Manages Neorg workspaces
+                config = {
+                  workspaces = {
+                    notes = "~/Documents/Neorg",
+                  },
+                },
+              },
+            },
+          }
+        end,
     },
     -- -------------
     -- UI
@@ -150,10 +166,22 @@ require("lazy").setup({
     { "simrat39/rust-tools.nvim" },
     { "khaveesh/vim-fish-syntax" },
     { "cespare/vim-toml" },
-
+    { "mfussenegger/nvim-dap-python" },
     -- -------------
     -- LSP
     --
+    { "folke/neodev.nvim", opts = {} },
+    { "mfussenegger/nvim-dap" },
+    {
+        "theHamsta/nvim-dap-virtual-text",
+        config = function() require("nvim-dap-virtual-text").setup() end,
+        dependencies = { "mfussenegger/nvim-dap" },
+    },
+    {
+        "rcarriga/nvim-dap-ui",
+        config = function() require("dapui").setup() end,
+        dependencies = { "mfussenegger/nvim-dap" },
+    },
     { "neovim/nvim-lspconfig" },
     { "nvim-lua/lsp_extensions.nvim" },
 
@@ -175,29 +203,6 @@ require("lazy").setup({
     { "saadparwaiz1/cmp_luasnip" },
 
 
-    -- {  'ms-jpq/coq_nvim',
-    --     lazy = false,
-    --     branch = 'coq',
-    --     init = function()
-    --         vim.g.coq_settings =
-    --         {
-    --             -- Auto-start without message
-    --             ["auto_start"] = "shut-up",
-    --             -- Disable keybindings for C-k and C-h
-    --             ["keymap.recommended"] = false,
-    --             ["keymap.bigger_preview"] = "<nop>",
-    --             ["keymap.jump_to_mark"]= "<nop>"
-    --         }
-    --     end,
-    --     dependencies = {
-    --         'ms-jpq/coq.artifacts',
-    --         branch = 'artifacts',
-    --     },
-    --     -- config = function()
-    --     --     require("config.ms_jpq_coq")
-    --     -- end,
-    -- },
-
     { "mhartington/formatter.nvim" },
     {
         "nvim-treesitter/nvim-treesitter",
@@ -216,7 +221,5 @@ require("lazy").setup({
           vim.g.startuptime_tries = 10
         end,
     },
-    -- should always go last
-    -- { "ryanoasis/vim-devicons" },
 
 })

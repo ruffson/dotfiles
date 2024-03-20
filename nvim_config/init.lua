@@ -302,8 +302,6 @@ keymap("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
 
 keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 keymap("n", "<leader>ld", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
--- keymap("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>")
--- keymap("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>")
 
 -- --------------------
 -- Treesitter --
@@ -491,6 +489,24 @@ require("neorg").setup {
     },
 }
 -- --------------------
+-- Neodev --
+-- --------------------
+require("neodev").setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+})
+-- --------------------
+-- Nvim DAP --
+-- --------------------
+
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+
+vim.api.nvim_set_keymap("n", "<leader>du", ":lua require('dapui').toggle() <CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>db", ":DapToggleBreakpoint <CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>dc", ":DapContinue <CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>di", ":DapStepInto <CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>do", ":DapStepOver <CR>", opts_silent)
+vim.api.nvim_set_keymap("n", "<leader>dr", ":lua require('dapui').open({reset = true}) <CR>", opts_silent)
+-- --------------------
 -- Nvim UFO --
 -- --------------------
 -- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
@@ -677,7 +693,15 @@ wk.register({
         c = "Colorscheme",
     },
     s = "Save",
-    d = "Diagnostics",
+    d = {
+        name = "Debug",
+        u = "UI",
+        b = "Breakpoint Toggle",
+        c = "Continue",
+        i = "Into",
+        o = "Over",
+        r = "Reset",
+    },
     h = "how do I",
     g = {
         name = "Git hunks",
