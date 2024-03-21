@@ -146,12 +146,27 @@ require("lazy").setup({
         opts = {}
     },
     {
-      "folke/todo-comments.nvim",
-      dependencies = { "nvim-lua/plenary.nvim" },
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
     },
     {
-       "m4xshen/hardtime.nvim",
-       dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+        "m4xshen/hardtime.nvim",
+        dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+        opts = {},
+    },
+    {
+        "zbirenbaum/copilot.lua",
+        config = function() require("copilot").setup() end,
+    },
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        build = ":Copilot auth",
+        opts = {
+            suggestion = { enabled = true },
+            -- panel = { enabled = false },
+            -- auto_trigger = { enabled = true },
+        },
     },
     -- -------------
     -- LANGUAGES
