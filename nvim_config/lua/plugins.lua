@@ -154,18 +154,18 @@ require("lazy").setup({
         dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
         opts = {},
     },
-    {
-        "zbirenbaum/copilot.lua",
-        config = function() require("copilot").setup() end,
-    },
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     config = function() require("copilot").setup() end,
+    -- },
     {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
         build = ":Copilot auth",
         opts = {
             suggestion = { enabled = true },
-            -- panel = { enabled = false },
-            -- auto_trigger = { enabled = true },
+            panel = { enabled = false },
+            auto_trigger = { enabled = true },
         },
     },
     -- -------------
@@ -194,9 +194,16 @@ require("lazy").setup({
     },
     {
         "rcarriga/nvim-dap-ui",
-        config = function() require("dapui").setup() end,
-        dependencies = { "mfussenegger/nvim-dap" },
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "nvim-neotest/nvim-nio"
+        },
     },
+    -- {
+    --     "rcarriga/nvim-dap-ui",
+    --     config = function() require("dapui").setup() end,
+    --     dependencies = { "mfussenegger/nvim-dap" },
+    -- },
     { "neovim/nvim-lspconfig" },
     { "nvim-lua/lsp_extensions.nvim" },
 
