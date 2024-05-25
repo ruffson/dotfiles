@@ -1,7 +1,8 @@
 # >>> Start TMUX on login >>>
 if status is-interactive
     and not set -q TMUX
-    exec tmux
+    and not pstree -s %self | grep -q code
+        exec tmux
 end
 # <<< Start TMUX on login <<<
 
