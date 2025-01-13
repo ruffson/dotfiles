@@ -78,6 +78,9 @@ autocmd Filetype xml setlocal shiftwidth=2
 " Highlight yanked line
 au TextYankPost * silent! lua vim.highlight.on_yank()
 ]])
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- Disable mouse mode
 vim.opt.mouse = ""

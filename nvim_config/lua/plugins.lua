@@ -208,13 +208,21 @@ require("lazy").setup({
         dependencies = {
             "mfussenegger/nvim-dap",
             "nvim-neotest/nvim-nio"
+
         },
+            config = function() require("dapui").setup({
+                --local dap, dapui = require("dap"), require("dapui")
+                --dap.listeners.before.launch.dapui_config = function()
+                --    dapui.open()
+                --end
+            }) end,
     },
     -- {
     --     "rcarriga/nvim-dap-ui",
     --     config = function() require("dapui").setup() end,
     --     dependencies = { "mfussenegger/nvim-dap" },
     -- },
+    { "sindrets/diffview.nvim" },
     { "neovim/nvim-lspconfig" },
     { "nvim-lua/lsp_extensions.nvim" },
 
