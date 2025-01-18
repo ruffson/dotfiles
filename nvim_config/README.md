@@ -1,3 +1,4 @@
-# Neovim setup
+# 💤 LazyVim
 
-Sym-link or move all files in this directory to the nvim config directory, e.g. `~/.config/nvim/`.
+A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
+Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
