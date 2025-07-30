@@ -17,6 +17,7 @@ abbr -a ll lsd -l
 abbr -a ip ip -c
 abbr -a sage micromamba run -n sage sage
 abbr -a sr bass source /usr/lib64/ros2-humble/setup.bash
+abbr -a sb bass source /home/raph/dev/bright/iroc/src/brightai/ros2_ws/install/setup.sh
 # <<< ALIASES <<<
 
 # >>> Exports >>>
@@ -38,8 +39,9 @@ end
 funcsave prime-run >/dev/null
 
 set -gx DBX_CONTAINER_MANAGER docker
+set -gx INFLUX_TOKEN "o9Wmge1ri34RfPVSw5W_S7drPsAcLE7uah7ysXR0XEjVu5RW4uEqmBLZtBqmMQaPz1YW1yGkYkgvIwImuY3mTA=="
 
 # TODO: Make this conditional or put in a fn
-bass source /usr/lib64/ros2-humble/setup.bash
+# bass source /usr/lib64/ros2-humble/setup.bash
 
 zoxide init fish | source
