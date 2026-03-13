@@ -18,14 +18,18 @@ abbr -a ip ip -c
 abbr -a sage micromamba run -n sage sage
 abbr -a sr bass source /usr/lib64/ros2-humble/setup.bash
 abbr -a sb bass source /home/raph/dev/bright/iroc/src/brightai/ros2_ws/install/setup.sh
+alias bat="batcat"
+alias fd="fdfind"
+
 # <<< ALIASES <<<
 
 # >>> Exports >>>
 set -gx VISUAL nvim
 set -gx EDITOR nvim
 set -gx FZF_DEFAULT_COMMAND "fd --type f"
-set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -gx MANPAGER "sh -c 'col -bx | batcat -l man -p'"
 set -gx MANROFFOPT -c
+set -g hydro_multiline true
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.cargo/bin"
 # fish_add_path "$HOME/Applications/mambaforge/bin"
