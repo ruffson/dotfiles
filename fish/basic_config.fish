@@ -16,8 +16,7 @@ abbr -a l lsd -l
 abbr -a ll lsd -l
 abbr -a ip ip -c
 abbr -a sage micromamba run -n sage sage
-abbr -a sr bass source /usr/lib64/ros2-humble/setup.bash
-abbr -a sb bass source /home/raph/dev/bright/iroc/src/brightai/ros2_ws/install/setup.sh
+abbr -a sr bass source /opt/ros/jazzy/setup.bash
 alias bat="batcat"
 alias fd="fdfind"
 
